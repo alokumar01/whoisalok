@@ -114,8 +114,10 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply min-h-screen;
+    background: linear-gradient(120deg, #dbeafe 30%, #bfdbfe 60%, #ffffff 90%);
+    background-attachment: fixed;
   }
 }
-
