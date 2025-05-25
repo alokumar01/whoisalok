@@ -1,18 +1,19 @@
 import Hero from '@/components/Hero'
 import Navbar from '@/components/Navbar'
 import React from 'react'
+import Project from '@/components/Project'
 
 const Home = () => {
   return (
-    <main className="relative min-h-screen">
-      
+    <main className="w-full">
+  
       <Navbar />
-
-      <section className='p-7'><Hero /></section>
+      <Hero />
+      <Project />
       
 
 
-      
+    
     </main>
   )
 }

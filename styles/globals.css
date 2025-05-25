@@ -117,7 +117,7 @@
 
   body {
     @apply min-h-screen;
-    background: linear-gradient(120deg, #dbeafe 30%, #bfdbfe 60%, #ffffff 90%);
-    background-attachment: fixed;
+    background: linear-gradient(-120deg, #90e5ff, #ffffff);
+    /* background-attachment: fixed; */
   }
 }

@@ -1,16 +1,39 @@
 'use client';
 
-import React, { useState } from 'react'
-import { navLinks } from '@/constants/data'
-import { ToggleRightIcon } from 'lucide-react'
-import { MenuIcon, X } from 'lucide-react'
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { navLinks } from '@/constants/data';
+import { Sun, Moon, Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // // Handle scroll for shadow effect
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     setIsScrolled(window.scrollY > 10);
+  //   };
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  // }, []);
+
+  // Toggle dark mode
+  // useEffect(() => {
+  //   if (isDarkMode) {
+  //     document.documentElement.classList.add('dark');
+  //   } else {
+  //     document.documentElement.classList.remove('dark');
+  //   }
+  // }, [isDarkMode]);
 
   return (
-    <header className="fixed top-0 w-full">
+    <header
+      className={`fixed top-0 w-full z-50 transition-shadow duration-300 ${
+        isScrolled ? 'shadow-md bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg' : 'bg-transparent'
+      }`}
+    >
       <nav
         className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"
         style={{ fontFamily: 'var(--font-geist), sans-serif' }}
@@ -19,98 +42,125 @@ const Navbar = () => {
         {/* Logo */}
         <motion.a
           href="/"
-          className="font-semibold text-lg text-gray-900 dark:text-white "
-          // initial={{ x: -30, opacity: 0 }}
-          // animate={{ x: 0, opacity: 1 }}
-          // transition={{ duration: 0.5 }}
+          className="font-semibold text-2xl text-gray-900 dark:text-white bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent"
+          initial={{ x: -30, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          whileHover={{ scale: 1.05 }}
         >
-          <span className='text-2xl' style={ {fontFamily: 'var(--font-great-vibes)'}}>Alok Kumar</span> 
+          <span style={{ fontFamily: 'var(--font-great-vibes)' }}>Alok Kumar</span>
         </motion.a>
 
         {/* Desktop NavLinks centered with frosted glass */}
         <div className="hidden md:flex flex-1 justify-center">
-          <ul
-            className="flex  bg-white/20 dark:bg-gray-800/40 backdrop-blur-lg
-                       py-1 rounded-full shadow-md"
-          >
+          <ul className="flex bg-white/20 dark:bg-gray-800/40 backdrop-blur-lg py-1 rounded-full shadow-md">
             {navLinks.map((link) => (
               <li key={link.label}>
-                <a
+                <motion.a
                   href={link.href}
-                  className="
-                    flex items-center gap-2 px-4 py-2 rounded-full border border-transparent
-                    text-gray-700 dark:text-gray-200 hover:bg-white/40  
-                    dark:hover:bg-blue-900 
-                    transition
-                  "
+                  className="flex items-center gap-2 px-4 py-2 rounded-full border border-transparent text-gray-700 dark:text-gray-200 hover:bg-white/40 dark:hover:bg-blue-900/40 transition"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   {link.icon && <span className="text-lg">{link.icon}</span>}
                   <span>{link.label}</span>
-                </a>
+                </motion.a>
               </li>
             ))}
           </ul>
         </div>
 
-      {/* dark mode */}
-        <div className="hidden md:flex">
-              <button
-                className="p-2 text-gray-700 dark:text-gray-200 border rounded-full hover:bg-gray-100/20 dark:hover:bg-gray-800 transition"
-                aria-label="Toggle dark mode"
-              >
-                Resume
-              </button>
+        {/* Dark Mode Toggle and Resume Button */}
+        <div className="hidden md:flex items-center space-x-4">
+          <motion.a
+            href="/resume.pdf"
+            download
+            className="bg-gradient-to-r from-blue-600 to-blue-800 text-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition duration-300"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Resume
+          </motion.a>
+          {/* <motion.button
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            className="p-2 text-gray-700 dark:text-gray-200 border rounded-full hover:bg-gray-100/20 dark:hover:bg-gray-800 transition"
+            aria-label="Toggle dark mode"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          </motion.button> */}
         </div>
 
-        {/* Mobile hamburger and logo */}
-        <div className="md:hidden flex items-center space-x-4">
-          <button
+        {/* Mobile Hamburger */}
+        <div className="md:hidden flex items-center">
+          <motion.button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-expanded={isMenuOpen}
             aria-label="Toggle menu"
-            className="p-2 rounded-md focus:outline-none focus:ring-2 "
-           >
+            className="p-2 rounded-md focus:outline-none focus:ring-2"
+            whileTap={{ scale: 0.9 }}
+          >
             {isMenuOpen ? (
-              <X className="w-6 h-6 text-gray-800 dark:text-gray-200 transition-transform" />
+              <X className="w-6 h-6 text-gray-800 dark:text-gray-200" />
             ) : (
-              <MenuIcon className="w-6 h-6 text-gray-800 dark:text-gray-200 transition-transform" />
+              <Menu className="w-6 h-6 text-gray-800 dark:text-gray-200" />
             )}
-          </button>
+          </motion.button>
         </div>
       </nav>
 
-      {/* Mobile menu */}
-      <div
-        className={`md:hidden bg-white shadow-md overflow-hidden transition-all duration-300 ease-in-out ${
-          isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-1 opacity-0'
-        }`}
-        aria-hidden={!isMenuOpen}
-        >
-        <ul className="flex flex-col px-6 py-4 space-y-4">
-          {navLinks.map((link) => (
-            <li key={link.label}>
-              <a
-                href={link.href}
-                className="flex gap-4 px- py-2.5 border rounded-md border-transparent text-gray-700 hover:bg-gray-100 hover:border-gray-300 transition"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {<span className="">{link.icon}</span>}
-                {link.label}
-              </a>
-            </li>
-          ))}
-
-          {/* Placeholder for Dark mode toggle later */}
-          <li>
-            <button className="w-full px-4 py-2 border rounded-md text-gray-700 hover:bg-gray-100 transition">
-              Dark Mode Toggle
-            </button>
-          </li>
-
-        </ul>
-      </div>
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            className="md:hidden bg-white dark:bg-gray-900 shadow-md overflow-hidden"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            aria-hidden={!isMenuOpen}
+          >
+            <ul className="flex flex-col px-6 py-4 space-y-4">
+              {navLinks.map((link) => (
+                <li key={link.label}>
+                  <motion.a
+                    href={link.href}
+                    className="flex gap-4 px-4 py-2.5 border rounded-md border-transparent text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                    onClick={() => setIsMenuOpen(false)}
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    {link.icon && <span className="text-lg">{link.icon}</span>}
+                    {link.label}
+                  </motion.a>
+                </li>
+              ))}
+              <li>
+                <motion.button
+                  onClick={() => setIsDarkMode(!isDarkMode)}
+                  className="w-full flex items-center gap-4 px-4 py-2 border rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                  {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+                </motion.button>
+              </li>
+              <li>
+                <motion.a
+                  href="/resume.pdf"
+                  download
+                  className="w-full flex items-center gap-4 px-4 py-2 border rounded-md bg-gradient-to-r from-blue-600 to-blue-800 text-white hover:shadow-md transition"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  Download Resume
+                </motion.a>
+              </li>
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
