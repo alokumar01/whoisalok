@@ -1,11 +1,9 @@
 import React from 'react'
 
-const Projects = () => {
+const page = () => {
   return (
-    <section className=''>
-
-    </section>
+    <div>page</div>
   )
 }
 
-export default Projects
+export default page

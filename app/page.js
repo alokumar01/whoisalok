@@ -1,8 +1,10 @@
 import Hero from '@/components/Hero'
 import Navbar from '@/components/Navbar'
 import React from 'react'
-import Project from '@/components/Project'
-
+import Project from '../components/Project'
+import About from '@/components/About'
+import BlogPost from '../components/BlogPost'
+import NewsletterForm from '@/components/NewsletterForm'
 const Home = () => {
   return (
     <main className="w-full">
@@ -10,6 +12,9 @@ const Home = () => {
       <Navbar />
       <Hero />
       <Project />
+      <About />
+      <BlogPost />
+      <NewsletterForm />
       
 
 

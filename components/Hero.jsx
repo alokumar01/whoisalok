@@ -46,7 +46,7 @@ const Hero = () => {
           <TypeAnimation
             sequence={['Web Developer', 2000, 'React Enthusiast', 2000, 'UI/UX Lover', 2000]}
             wrapper="span"
-            speed={60}
+            speed={60}  
             repeat={Infinity}
             
             className="text-black dark:text-white"

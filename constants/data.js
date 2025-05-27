@@ -20,7 +20,7 @@ export const projectsData = [
     tech: ['Next.js', 'MongoDB', 'Tailwind', 'NextAuth'],
     github: 'https://github.com/alok/event-management-system',
     demo: 'https://whoisalok.tech',
-    image: '/images/try.jpg', // ✅ image from /public/images
+    image: '/images/try.jpg', 
   },
   {
     title: 'React Portfolio',
@@ -28,6 +28,6 @@ export const projectsData = [
     tech: ['Next.js', 'Sanity', 'Tailwind'],
     github: 'https://github.com/alok/portfolio',
     demo: 'https://whoisalok.tech',
-    image: '/images/ems.webp', // ✅ another image if available
+    image: '/images/ems.webp', 
   },
 ]
