@@ -126,9 +126,10 @@ const TerminalBox = () => {
       {lines.map((line, idx) => (
         <div key={idx}>
           <p>{line.command}</p>
-          <p className="ml-4">{line.response}</p>
+          <div className="ml-4">{line.response}</div>
         </div>
       ))}
+
       <form onSubmit={handleCommand} className="mt-2 flex items-center">
         <span className="mr-2">$</span>
         <input

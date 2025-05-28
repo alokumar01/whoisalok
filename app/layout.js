@@ -1,11 +1,11 @@
-// app/layout.tsx or app/layout.js
 
 import "../styles/globals.css";
 import CanvasCursor from '../components/CanvasCursor';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-
 import { Space_Grotesk, Work_Sans, Geist, Great_Vibes } from 'next/font/google';
+import { ThemeProvider } from "next-themes";
+import ThemeProviderClient from "@/components/ThemeProviderClient";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -36,12 +36,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${workSans.variable} ${geist.variable} ${greatVibes.variable}`}>
-      <body className="bg-gradient-to-br from-blue-100 via-white to-blue-50 antialiased text-black">
-        <Navbar />
-        <CanvasCursor />
-        <main>{children}</main>
-        {/* <Footer /> */}
+    <html lang="en" suppressHydrationWarning className={`${spaceGrotesk.variable} ${workSans.variable} ${geist.variable} ${greatVibes.variable}`}>
+      <body className="bg-gradient-to-br from-blue-100 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-950 antialiased text-black dark:text-white">
+        <ThemeProviderClient>
+          <Navbar />
+          <CanvasCursor />
+            {children}
+          <Footer />
+        </ThemeProviderClient>
       </body>
     </html>
   );

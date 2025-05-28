@@ -5,6 +5,8 @@ import Project from '../components/Project'
 import About from '@/components/About'
 import BlogPost from '../components/BlogPost'
 import NewsletterForm from '@/components/NewsletterForm'
+import Contact from '@/components/Contact'
+import Footer from '@/components/Footer'
 const Home = () => {
   return (
     <main className="w-full">
@@ -15,7 +17,8 @@ const Home = () => {
       <About />
       <BlogPost />
       <NewsletterForm />
-      
+      <Contact />
+      {/* <Footer/> */}
 
 
     

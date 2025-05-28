@@ -4,13 +4,14 @@ import React, { useState, useEffect } from 'react';
 import { navLinks } from '@/constants/data';
 import { Sun, Moon, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ThemeToggle from '@/hooks/useThemes';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // // Handle scroll for shadow effect
+  // Handle scroll for shadow effect
   // useEffect(() => {
   //   const handleScroll = () => {
   //     setIsScrolled(window.scrollY > 10);
@@ -20,13 +21,13 @@ const Navbar = () => {
   // }, []);
 
   // Toggle dark mode
-  // useEffect(() => {
-  //   if (isDarkMode) {
-  //     document.documentElement.classList.add('dark');
-  //   } else {
-  //     document.documentElement.classList.remove('dark');
-  //   }
-  // }, [isDarkMode]);
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
 
   return (
     <header
@@ -72,7 +73,7 @@ const Navbar = () => {
 
         {/* Dark Mode Toggle and Resume Button */}
         <div className="hidden md:flex items-center space-x-4">
-          <motion.a
+          {/* <motion.a
             href="/resume.pdf"
             download
             className="bg-gradient-to-r from-blue-600 to-blue-800 text-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition duration-300"
@@ -80,16 +81,8 @@ const Navbar = () => {
             whileTap={{ scale: 0.95 }}
           >
             Resume
-          </motion.a>
-          {/* <motion.button
-            onClick={() => setIsDarkMode(!isDarkMode)}
-            className="p-2 text-gray-700 dark:text-gray-200 border rounded-full hover:bg-gray-100/20 dark:hover:bg-gray-800 transition"
-            aria-label="Toggle dark mode"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </motion.button> */}
+          </motion.a> */}
+          <ThemeToggle />
         </div>
 
         {/* Mobile Hamburger */}
@@ -114,7 +107,7 @@ const Navbar = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="md:hidden bg-white dark:bg-gray-900 shadow-md overflow-hidden"
+            className="md:hidden bg-white dark:bg-gray-900/95 shadow-md overflow-hidden"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}

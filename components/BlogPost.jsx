@@ -33,62 +33,63 @@ const fadeUp = {
 const BlogPost = () => {
   return (
     <section 
-      className="max-w-4xl mx-auto px-6 md:px-1 py-20"
-      style={{ fontFamily: 'var(--font-geist)' }}
-    >
-      <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-          Latest Blog
-        </h2>
-        <div className="mt-3 flex justify-center">
-          <hr className="w-20 border-2 border-black dark:border-white" />
-        </div>
-      </div>
+  className="max-w-5xl mx-auto px-6 md:px-1 py-20 dark:text-white"
+  style={{ fontFamily: 'var(--font-geist)' }}
+>
+  <div className="text-center mb-12">
+    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+      Latest Blog
+    </h2>
+    <div className="mt-3 flex justify-center">
+      <hr className="w-20 border-2 border-indigo-500 rounded" />
+    </div>
+  </div>
 
-      <div className="grid md:grid-cols-2 gap-10">
-        {blogs.map((blog, i) => (
-          <motion.div
-            key={i}
-            className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-lg rounded-xl shadow p-6"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            custom={i}
-            variants={fadeUp}
-          >
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">
-              {blog.title}
-            </h3>
-            <p className="text-sm text-gray-500 mb-2">
-              {blog.date} • {blog.readTime}
-            </p>
-            <p className="text-gray-700 dark:text-gray-300 mb-4">
-              {blog.summary}
-            </p>
-            <Link
-              href={`/blog/${blog.slug}`}
-              className="text-blue-600 hover:underline font-medium"
-            >
-              Read More →
-            </Link>
-          </motion.div>
-        ))}
-      </div>
-
+  <div className="grid md:grid-cols-2 gap-10">
+    {blogs.map((blog, i) => (
       <motion.div
-        className="mt-10 flex justify-center"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ delay: 0.4, duration: 0.6 }}
+        key={i}
+        className="border-1  rounded-xl shadow-md p-6 transition-all dark:shadow-xl shadow-indigo-900/10 hover:text-indigo-400 dark:hover:text-indigo-300"
+        initial="hidden"
+        whileInView="visible"
         viewport={{ once: true }}
+        custom={i}
+        variants={fadeUp}
       >
-        <Link href="/blog">
-          <button className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full flex items-center gap-2 transition-all shadow-md">
-            View All Posts <ArrowRightCircle size={20} />
-          </button>
+        <h3 className="text-xl font-semibold text-gray-900 mb-1 dark:text-white">
+          {blog.title}
+        </h3>
+        <p className="text-sm text-indigo-500 mb-2 dark:text-blue-200">
+          {blog.date} • {blog.readTime}
+        </p>
+        <p className="text-gray-700 mb-4 dark:text-gray-400">
+          {blog.summary}
+        </p>
+        <Link
+          href={`/blog/${blog.slug}`}
+          className="text-indigo-600 hover:underline font-medium"
+        >
+          Read More →
         </Link>
       </motion.div>
-    </section>
+    ))}
+  </div>
+
+  <motion.div
+    className="mt-10 flex justify-center"
+    initial={{ opacity: 0 }}
+    whileInView={{ opacity: 1 }}
+    transition={{ delay: 0.4, duration: 0.6 }}
+    viewport={{ once: true }}
+  >
+    <Link href="/blog">
+      <button className="bg-gradient-to-r from-indigo-600 to-indigo-800 hover:from-indigo-700 hover:to-indigo-900 text-white px-8 py-3 rounded-full flex items-center gap-2 transition-all shadow-md cursor-pointer">
+        View All Posts <ArrowRightCircle size={20} />
+      </button>
+    </Link>
+  </motion.div>
+</section>
+
   );
 };
 

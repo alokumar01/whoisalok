@@ -12,7 +12,7 @@ const Project = () => {
     <section 
       className="py-20 px-6"
       style={ {fontFamily: 'var(--font-geist)'} }>
-      <div className="max-w-7xl md:px-18 mx-auto">
+      <div className="max-w-6xl md:px-18 mx-auto">
         {/* Animate heading */}
         <motion.h2 
           className="text-3xl md:text-4xl font-bold mb-10 text-center text-gray-900 dark:text-white"
@@ -23,7 +23,7 @@ const Project = () => {
         >
           Projects
         <div className="flex justify-center mt-3">
-          <hr className="border-2 border-black w-20 " />
+          <hr className="border-2 border-indigo-500 w-20 dark:border-indigo-400 rounded" />
         </div>
 
         </motion.h2>
@@ -37,14 +37,14 @@ const Project = () => {
               // viewport={{ once: true }}
             >
               <Link href="/projects" className="group block">
-                <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-lg rounded-xl shadow-lg overflow-hidden border border-white/10 dark:border-gray-700 hover:shadow-2xl transition duration-300 cursor-pointer">
+                <div className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-md border border-indigo-100 dark:border-indigo-700 hover:shadow-2xl rounded-xl overflow-hidden transition duration-300 hover:bg-indigo-900/30 drop-shadow-md">
                   {project.image && (
                     <Image
                       src={project.image}
                       alt={project.title}
                       width={600}
                       height={500}
-                      className="w-full object-cover h-48 md:h-72 lg:h-96"
+                      className="w-full object-cover h-48 md:h-72 lg:h-96 dark:contrast-100"
                     />
                   )}
                   <div className="p-6">
@@ -69,9 +69,10 @@ const Project = () => {
           viewport={{ once: true }}
         >
           <Link href="/projects">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg transition">
-              View All Projects
-            </button>
+            <button className="bg-gradient-to-r from-indigo-600 to-indigo-800 hover:from-indigo-700 hover:to-indigo-900 text-white px-8 py-3 rounded-full flex items-center gap-2 transition-all shadow-md cursor-pointer">
+            View All Projects
+          </button>
+
           </Link>
         </motion.div>
       </div>

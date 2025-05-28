@@ -23,7 +23,7 @@ const stagger = {
 const About = () => {
   return (
     <motion.section
-      className="max-w-6xl mx-auto px-6 md:px-20 py-20 "
+      className="max-w-5xl mx-auto px-6 md:px-20 py-20 dark:bg-gradient-to-br from-gray-900 via-gray-950 to-gray-800 rounded-lg "
       variants={stagger}
       initial="hidden"
       whileInView="visible"
@@ -36,7 +36,7 @@ const About = () => {
           About Me
         </h2>
         <div className="mt-3 flex justify-center">
-          <hr className="w-20 border-2 border-black dark:border-white" />
+          <hr className="w-20 border-2 border-indigo-500 dark:border-indigo-400 rounded" />
         </div>
       </motion.div>
 
@@ -44,23 +44,23 @@ const About = () => {
       <motion.div className="grid md:grid-cols-2 gap-10 items-center" variants={stagger}>
         {/* Left Column - Text and Button */}
         <motion.div variants={fadeInUp}>
-          <p className="text-gray-700 px-2 dark:text-gray-300 mb-20 
-          text-[20px] leading-loose mt-7 text-left md:text-left">
+          <p className="text-gray-600 dark:text-gray-300 text-[20px] leading-loose mt-7 text-left px-2 mb-20">
             I’m Alok Kumar, a Full Stack Developer who builds fast and clean web apps
             using React, Next.js, and Tailwind CSS. I turn ideas into smooth user
             experiences.
           </p>
 
+
           {/* CTA Button */}
           <div className="flex justify-center md:justify-start">
             <Link
-              href="/about"
-              className="group inline-block border  border-gray-800 text-gray-800 px-2 py-3 rounded-full hover:bg-gray-800 hover:text-white transition-colors duration-300 "
-            >
-              <span className="flex items-center gap-2">
-                More About Me
-                <MoveRightIcon className=" opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 w-5" />
-              </span>
+                href="/about"
+                className="group inline-block bg-gradient-to-r from-indigo-600 to-indigo-800 text-white px-6 py-3 rounded-full hover:from-indigo-700 hover:to-indigo-900 transition-all duration-300 shadow-md"
+              >
+                <span className="flex items-center gap-2">
+                  More About Me
+                  <MoveRightIcon className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 w-5" />
+                </span>
             </Link>
           </div>
         </motion.div>
