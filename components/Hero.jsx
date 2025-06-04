@@ -42,7 +42,7 @@ const Hero = () => {
 
         {/* Subheading with Typing Effect */}
         <motion.h2
-          className="text-2xl sm:text-3xl md:text-5xl font-bold text-indigo-700 dark:text-blue-400"
+          className="text-[1.75rem] sm:text-3xl md:text-5xl font-bold text-indigo-700 dark:text-blue-400"
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.6, duration: 0.5 }}
@@ -76,8 +76,10 @@ const Hero = () => {
           transition={{ delay: 1, duration: 0.5 }}
         >
           <a
-            href="/resume.pdf"
-            download
+            href="/Alok_Kumar_Resume.pdf"
+            // download
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-block bg-gradient-to-r from-indigo-600 to-indigo-800 hover:from-indigo-700 hover:to-indigo-900 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition duration-300"
           >
             Download Resume

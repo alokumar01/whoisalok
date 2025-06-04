@@ -30,7 +30,7 @@ const NewsletterForm = () => {
             type="email"
             placeholder="Enter your email"
             required
-            className="flex-1 h-14 px-5 py-4 text-base rounded-full shadow-sm focus:ring-2 focus:ring-indigo-400 dark:bg-gray-900 dark:text-white dark:placeholder-gray-400"
+            className="flex-1 h-14 px-5 py-4 text-base bg-transparent border-0 border-b border-indigo-300 dark:border-indigo-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 hover:rounded-md transition-all duration-200"
           />
           <Button
             type="submit"

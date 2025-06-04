@@ -23,7 +23,7 @@ const stagger = {
 const About = () => {
   return (
     <motion.section
-      className="max-w-5xl mx-auto px-6 md:px-20 py-20 dark:bg-gradient-to-br from-gray-900 via-gray-950 to-gray-800 rounded-lg "
+      className="max-w-6xl md:dark:max-w-5xl mx-auto px-6 md:px-20 py-20 dark:bg-gradient-to-br from-gray-900 via-gray-950 to-gray-800 rounded-lg "
       variants={stagger}
       initial="hidden"
       whileInView="visible"

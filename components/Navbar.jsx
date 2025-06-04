@@ -140,8 +140,9 @@ const Navbar = () => {
               </li>
               <li>
                 <motion.a
-                  href="/resume.pdf"
-                  download
+                  href="/Alok_Kumar_Resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full flex items-center gap-4 px-4 py-2 border rounded-md bg-gradient-to-r from-blue-600 to-blue-800 text-white hover:shadow-md transition"
                   whileHover={{ scale: 1.02 }}
                 >

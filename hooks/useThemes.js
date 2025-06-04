@@ -12,7 +12,7 @@ const ThemeToggle = () => {
       aria-label="Toggle dark mode"
       className="p-2 rounded-full border border-gray-300 dark:border-gray-900 cursor-pointer"
     >
-      {theme === 'dark' ? <Sun className="w-5 h-5 text-yellow-400" /> : <Moon className="w-5 h-5 text-gray-800" />}
+      {theme === 'dark' ? <Sun className="w-5 h-5 text-yellow-400" /> : <Moon className="w-5 h-5 text-gray-500" />}
     </button>
   );
 };

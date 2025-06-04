@@ -37,7 +37,7 @@ const Project = () => {
               // viewport={{ once: true }}
             >
               <Link href="/projects" className="group block">
-                <div className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-md border border-indigo-100 dark:border-indigo-700 hover:shadow-2xl rounded-xl overflow-hidden transition duration-300 hover:bg-indigo-900/30 drop-shadow-md">
+                <div className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-md border border-indigo-100 dark:border-indigo-700 hover:shadow-2xl rounded-xl overflow-hidden transition duration-300 hover:bg-indigo-900/6 drop-shadow-md">
                   {project.image && (
                     <Image
                       src={project.image}
