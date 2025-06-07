@@ -10,12 +10,12 @@ export default function NotFound() {
   const router = useRouter();
 
   // Auto-redirect after 5 seconds
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      router.push('/');
-    }, 5000);
-    return () => clearTimeout(timeout);
-  }, [router]);
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     router.push('/');
+  //   }, 5000);
+  //   return () => clearTimeout(timeout);
+  // }, [router]);
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 py-16 text-center">
