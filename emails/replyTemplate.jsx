@@ -1,4 +1,5 @@
-import { Html, Head, Body, Container, Text, Link } from "@react-email/components";
+import {Head, Body, Container, Text, Link } from "@react-email/components";
+import { Html } from "@react-email/html";
 
 export const ReplyTemplate = ({ replyText }) => (
   <Html>
