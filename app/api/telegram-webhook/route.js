@@ -1,10 +1,7 @@
-// app/api/telegram-webhook/route.js
-
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { ReplyTemplate } from "@/emails/replyTemplate";
-import { renderAsync } from "@resend/react";
 import { render } from "@react-email/render";
+import { ReplyTemplate } from "@/emails/ReplyTemplate"; // Adjust this if your path is different
 
 const resend = new Resend(process.env.RESEND_EMAIL_API);
 
@@ -17,10 +14,7 @@ export async function POST(req) {
       const [_, emailPart] = message.split("reply:");
       const [email, replyText] = emailPart.split("::");
 
-      console.log("before")
-      const html = await render(<ReplyTemplate replyText={replyText.trim()} />);
-      console.log(html);
-      console.log("after")
+      const html = render(<ReplyTemplate replyText={replyText.trim()} />);
 
       await resend.emails.send({
         from: "Alok Kumar <reply@mail.whoisalok.tech>",
