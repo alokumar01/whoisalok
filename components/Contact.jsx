@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { toast } from 'sonner';
 
 const ContactForm = () => {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
@@ -10,16 +11,43 @@ const ContactForm = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    console.log('Form Data:', form);
+    // console.log('Form Data:', form);
+    const {name, email, message} = form;
+    // setTimeout(() => {
+    //   setIsSubmitting(false);
+    //   toast.success('Message sent successfully!');
+    // }, 1000);
+    
+    try {
+      // isSubmitting(true);
+      const res = await fetch('/api/contact', 
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, message })
+        }
+      );
+      
+      const data = await res.json();
 
-    setTimeout(() => {
-      setIsSubmitting(false);
+      if (!res.ok) {
+        toast.error(data.message || 'Message Not Sent!');
+        return;
+      }
+
+      toast.success(data.message || 'Message sent successfully!')
       setForm({ name: '', email: '', message: '' });
-      alert('Message sent successfully!');
-    }, 1000);
+
+    } catch (error) {
+      toast.error('Server error. Try again later.')
+      
+    } finally {
+      setIsSubmitting(false);
+    }
+
   };
 
   return (

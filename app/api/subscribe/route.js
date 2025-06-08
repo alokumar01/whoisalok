@@ -43,7 +43,7 @@
       // check for admin control 
       const setting = await SiteSetting.findById("global").lean();
       const emailsetting = setting?.emailSending ?? true;
-      console.log("Admin email sending staus", emailsetting);
+      // console.log("Admin email sending staus", emailsetting);
       
       if(emailsetting) {
         try {

@@ -10,14 +10,14 @@ const blogs = [
     summary: 'A beginner-friendly guide to build fast, scalable apps using Next.js.',
     date: 'May 27, 2025',
     readTime: '3 min read',
-    slug: 'getting-started'
+    slug: ''
   },
   {
     title: 'Why Tailwind CSS Rocks and Better than other',
     summary: 'Discover why Tailwind CSS is a favorite utility-first framework.',
     date: 'May 20, 2025',
     readTime: '2 min read',
-    slug: 'tailwind-guide'
+    slug: ' '
   }
 ];
 
