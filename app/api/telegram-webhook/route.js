@@ -2,35 +2,37 @@
 
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { ReplyTemplate } from "@/emails/replyTemplate";
+import { renderAsync } from "@resend/react";
+import { render } from "@react-email/render";
 
 const resend = new Resend(process.env.RESEND_EMAIL_API);
 
 export async function POST(req) {
   try {
     const body = await req.json();
-    console.log("Telegram Webhook Triggered:", body);
-
     const message = body?.message?.text;
-    const chatId = body?.message?.chat?.id;
 
-    // If message starts with reply:
-    if (message && message.startsWith("reply:")) {
+    if (message && message.includes("reply:")) {
       const [_, emailPart] = message.split("reply:");
       const [email, replyText] = emailPart.split("::");
 
-      if (email && replyText) {
-        await resend.emails.send({
-          from: "Alok Kumar <reply@mail.whoisalok.tech>",
-          to: email.trim(),
-          subject: "Reply from Alok – whoisalok.tech",
-          text: replyText.trim(),
-        });
-      }
+      console.log("before")
+      const html = await render(<ReplyTemplate replyText={replyText.trim()} />);
+      console.log(html);
+      console.log("after")
+
+      await resend.emails.send({
+        from: "Alok Kumar <reply@mail.whoisalok.tech>",
+        to: email.trim(),
+        subject: "Reply from Alok - whoisalok.tech",
+        html,
+      });
     }
 
     return NextResponse.json({ ok: true });
   } catch (err) {
-    console.error("Telegram webhook error:", err);
+    console.error("Webhook error:", err);
     return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
   }
 }

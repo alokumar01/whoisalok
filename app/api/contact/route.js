@@ -48,12 +48,12 @@ export async function POST(req) {
             `📬 <b>New Contact Message</b>\n\n👤 <b>Name:</b> ${name}\n📧 <b>Email:</b> ${email}\n📝 <b>Message:</b>\n${message}`
         );
         
-        await resend.emails.send({
-            from: "Alok Kumar <notify@mail.whoisalok.tech>",
-            to: email,
-            subject: "Thanks for contacting me!",
-            react: <ContactThanksTemplate name={name} />,
-        });
+        // await resend.emails.send({
+        //     from: "Alok Kumar <notify@mail.whoisalok.tech>",
+        //     to: email,
+        //     subject: "Thanks for contacting me!",
+        //     react: <ContactThanksTemplate name={name} />,
+        // });
 
 
         return NextResponse.json({ message: "Successfully Sent Message" })
