@@ -37,10 +37,10 @@ const ReplyTemplate = ({ replyText = "Thank you for reaching out!" }) => (
         {/* ✅ Add email reply button */}
           <div className="mt-4 mb-6">
             <a
-              href="mailto:alokofficial.me@gmail.com"
+              href="mailto:alokkumar012148@gmail.com"
               className="inline-block bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-700"
             >
-              ✉️ Reply via Email
+              ✉️ Reply Here...
             </a>
           </div>
 

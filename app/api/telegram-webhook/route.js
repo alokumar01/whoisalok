@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { render } from "@react-email/components";
-import ReplyTemplate from "@/emails/ReplyTemplate";
+import { ReplyTemplate } from "@/emails/ReplyTemplate";
 
 const resend = new Resend(process.env.RESEND_EMAIL_API);
 
