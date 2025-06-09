@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { navLinks } from '@/constants/data';
 import { Sun, Moon, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -11,16 +12,6 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Handle scroll for shadow effect
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     setIsScrolled(window.scrollY > 10);
-  //   };
-  //   window.addEventListener('scroll', handleScroll);
-  //   return () => window.removeEventListener('scroll', handleScroll);
-  // }, []);
-
-  // Toggle dark mode
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
@@ -41,47 +32,40 @@ const Navbar = () => {
         aria-label="Main navigation"
       >
         {/* Logo */}
-        <motion.a
-          href="/"
-          className="font-semibold text-2xl  dark:text-white bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent"
-          initial={{ x: -30, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          whileHover={{ scale: 1.05 }}
-        >
-          <span style={{ fontFamily: 'var(--font-great-vibes)' }}>Alok Kumar</span>
-        </motion.a>
+        <Link href="/" passHref>
+          <motion.span
+            className="font-semibold text-2xl dark:text-white bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent cursor-pointer"
+            initial={{ x: -30, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            whileHover={{ scale: 1.05 }}
+          >
+            <span style={{ fontFamily: 'var(--font-great-vibes)' }}>Alok Kumar</span>
+          </motion.span>
+        </Link>
 
-        {/* Desktop NavLinks centered with frosted glass */}
+        {/* Desktop NavLinks */}
         <div className="hidden md:flex flex-1 justify-center">
           <ul className="flex bg-white/20 dark:bg-gray-800/40 backdrop-blur-lg py-1 rounded-full shadow-md">
             {navLinks.map((link) => (
               <li key={link.label}>
-                <motion.a
-                  href={link.href}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full border border-transparent text-gray-700 dark:text-gray-200 hover:bg-white/40 dark:hover:bg-blue-900/40 transition"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {link.icon && <span className="text-lg">{link.icon}</span>}
-                  <span>{link.label}</span>
-                </motion.a>
+                <Link href={link.href}>
+                  <motion.span
+                    className="flex items-center gap-2 px-4 py-2 rounded-full border border-transparent text-gray-700 dark:text-gray-200 hover:bg-white/40 dark:hover:bg-blue-900/40 transition cursor-pointer"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {link.icon && <span className="text-lg">{link.icon}</span>}
+                    <span>{link.label}</span>
+                  </motion.span>
+                </Link>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Dark Mode Toggle and Resume Button */}
+        {/* Dark Mode Toggle */}
         <div className="hidden md:flex items-center space-x-4">
-          {/* <motion.a
-            href="/resume.pdf"
-            download
-            className="bg-gradient-to-r from-blue-600 to-blue-800 text-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition duration-300"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Resume
-          </motion.a> */}
           <ThemeToggle />
         </div>
 
@@ -117,15 +101,16 @@ const Navbar = () => {
             <ul className="flex flex-col px-6 py-4 space-y-4">
               {navLinks.map((link) => (
                 <li key={link.label}>
-                  <motion.a
-                    href={link.href}
-                    className="flex gap-4 px-4 py-2.5 border rounded-md border-transparent text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
-                    onClick={() => setIsMenuOpen(false)}
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    {link.icon && <span className="text-lg">{link.icon}</span>}
-                    {link.label}
-                  </motion.a>
+                  <Link href={link.href}>
+                    <motion.span
+                      className="flex gap-4 px-4 py-2.5 border rounded-md border-transparent text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer"
+                      onClick={() => setIsMenuOpen(false)}
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      {link.icon && <span className="text-lg">{link.icon}</span>}
+                      {link.label}
+                    </motion.span>
+                  </Link>
                 </li>
               ))}
               <li>
@@ -139,15 +124,14 @@ const Navbar = () => {
                 </motion.button>
               </li>
               <li>
-                <motion.a
+                <a
                   href="/Alok_Kumar_Resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full flex items-center gap-4 px-4 py-2 border rounded-md bg-gradient-to-r from-blue-600 to-blue-800 text-white hover:shadow-md transition"
-                  whileHover={{ scale: 1.02 }}
                 >
                   Download Resume
-                </motion.a>
+                </a>
               </li>
             </ul>
           </motion.div>

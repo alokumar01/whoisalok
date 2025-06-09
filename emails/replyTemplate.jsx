@@ -3,7 +3,7 @@ import { Tailwind } from "@react-email/tailwind";
 import { Head, Heading, Text } from "@react-email/components";
 import { EmailIcon } from "./EmailIcon";
 
-const ReplyTemplate = ({ replyText = "Thank you for reaching out!" }) => (
+export const ReplyTemplate = ({ replyText = "Thank you for reaching out!" }) => (
   <Html>
     <Tailwind>
       <Head /> {/* ✅ Required for Tailwind media queries */}
@@ -58,4 +58,3 @@ const ReplyTemplate = ({ replyText = "Thank you for reaching out!" }) => (
   </Html>
 );
 
-export default ReplyTemplate;
