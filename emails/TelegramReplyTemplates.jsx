@@ -1,12 +1,14 @@
+import React from 'react'
+
 import { Html } from "@react-email/html";
 import { Tailwind } from "@react-email/tailwind";
 import { Head, Heading, Text } from "@react-email/components";
 import { EmailIcon } from "./EmailIcon";
 
-export const ReplyTemplate = ({ replyText = "Thank you for reaching out!" }) => (
+export const TelegramReplyTemplates = ({ replyText = "Thank you for reaching out!" }) => (
   <Html>
     <Tailwind>
-      <Head /> {/* ✅ Required for Tailwind media queries */}
+      <Head /> 
       <div className="bg-white p-8 rounded-lg shadow-md max-w-xl mx-auto text-gray-800 font-sans" style={{ fontFamily: 'var(--font-geist)' }}>
         <Heading className="text-xl font-semibold mb-4">Hello</Heading>
 

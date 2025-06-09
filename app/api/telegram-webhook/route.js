@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { render } from "@react-email/components";
-import { ReplyTemplate } from "@/emails/ReplyTemplate";
+import { TelegramReplyTemplates } from "@/emails/TelegramReplyTemplates";
 
 const resend = new Resend(process.env.RESEND_EMAIL_API);
 
@@ -34,7 +34,7 @@ export async function POST(req) {
       return NextResponse.json({ ok: false, error: "Invalid email format" }, { status: 400 });
     }
 
-    const html = await render(<ReplyTemplate replyText={replyText} />, { pretty: true });
+    const html = await render(<TelegramReplyTemplates replyText={replyText} />, { pretty: true });
     const text = `${replyText}\n\nRegards,\nAlok Kumar\nhttps://whoisalok.tech`;
 
     const { data, error } = await resend.emails.send({
