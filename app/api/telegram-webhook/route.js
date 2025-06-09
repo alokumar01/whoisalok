@@ -1,65 +1,70 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import ReplyTemplate from "@/emails/ReplyTemplate";
-import { sendTelegramMessage } from "@/lib/sendTegramMessage";
 
 const resend = new Resend(process.env.RESEND_EMAIL_API);
 
 export async function POST(req) {
   try {
     const body = await req.json();
-    const message = body?.message?.text;
+    console.log("➡️ Telegram webhook body received:", JSON.stringify(body, null, 2));
 
-    if (!message || typeof message !== "string") {
-      await sendTelegramMessage("❌ Error: No valid message received in webhook.");
-      return NextResponse.json({ ok: false, error: "Invalid message" }, { status: 400 });
+    const message = body?.message?.text || "";
+    const chatId = body?.message?.chat?.id;
+    const messageId = body?.message?.message_id;
+
+    if (!message.startsWith("/reply:")) {
+      console.log("ℹ️ Ignored message:", message);
+      return NextResponse.json({ ok: true, message: "Ignored non-reply command" });
     }
 
-    if (!message.startsWith("reply:")) {
-      return NextResponse.json({ ok: true, message: "Ignored: Not a reply command" });
+    const [, content] = message.split("/reply:");
+    if (!content || !content.includes("::")) {
+      console.log("❌ Invalid format, missing '::'");
+      return NextResponse.json({ ok: false, error: "Invalid format. Use /reply:email::message" }, { status: 400 });
     }
 
-    const [, emailPart] = message.split("reply:");
-    if (!emailPart || !emailPart.includes("::")) {
-      await sendTelegramMessage("❌ Error: Invalid reply format. Use: reply:email::message");
-      return NextResponse.json({ ok: false, error: "Invalid reply format" }, { status: 400 });
-    }
-
-    const [emailRaw, replyRaw] = emailPart.split("::");
-    const email = emailRaw?.trim();
+    const [emailRaw, replyRaw] = content.split("::");
+    const email = emailRaw.trim();
     const replyText = replyRaw?.trim();
 
     if (!email || !replyText) {
-      await sendTelegramMessage("❌ Error: Missing email or reply text. Use: reply:email::message");
-      return NextResponse.json({ ok: false, error: "Missing email or reply text" }, { status: 400 });
+      console.log("❌ Missing email or message");
+      return NextResponse.json({ ok: false, error: "Missing email or message" }, { status: 400 });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      await sendTelegramMessage(`❌ Error: Invalid email address: ${email}`);
-      return NextResponse.json({ ok: false, error: "Invalid email address" }, { status: 400 });
+      console.log("❌ Invalid email format:", email);
+      return NextResponse.json({ ok: false, error: "Invalid email" }, { status: 400 });
     }
 
-    // ✅ Send using react (not html string)
-    const { error } = await resend.emails.send({
+    const html = `
+      <p>${replyText}</p>
+      <br>
+      <p>Regards,<br>Alok Kumar<br><a href="https://whoisalok.tech">whoisalok.tech</a></p>
+    `;
+
+    const text = `${replyText}\n\nRegards,\nAlok Kumar\nhttps://whoisalok.tech`;
+
+    console.log(`📧 Sending email to: ${email}`);
+    const { data, error } = await resend.emails.send({
       from: "Alok Kumar <reply@mail.whoisalok.tech>",
       to: email,
       subject: "Reply from Alok - whoisalok.tech",
-      react: <ReplyTemplate replyText={replyText} />,
-      text: `Dear Valued Contact,\n\n${replyText}\n\nI appreciate your interest and will get back to you as soon as possible.\nFeel free to explore my portfolio: https://whoisalok.tech\n\nBest regards,\nAlok Kumar\n\nThis is an automated response. Please do not reply directly to this email.`,
+      html,
+      text,
     });
 
     if (error) {
-      await sendTelegramMessage(`❌ Failed to send email to ${email}: ${error.message}`);
+      console.error("❌ Resend email send error:", error.message);
       return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
     }
 
-    await sendTelegramMessage(`✅ Email sent successfully to ${email}`);
-    return NextResponse.json({ ok: true });
+    console.log("✅ Email sent via Resend:", data);
+    return NextResponse.json({ ok: true, data });
 
   } catch (err) {
-    console.error("Webhook error:", err);
-    await sendTelegramMessage(`❌ Webhook error: ${err.message}`);
+    console.error("❌ Webhook server error:", err.message);
     return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
   }
 }
