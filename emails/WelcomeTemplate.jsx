@@ -1,63 +1,40 @@
-
-import * as React from "react";
+// emails/WelcomeTemplate.jsx
+import { Html } from "@react-email/html";
+import { Tailwind } from "@react-email/tailwind";
+import { Head, Heading, Text } from "@react-email/components";
 
 export const WelcomeTemplate = () => (
-  <div
-    style={{
-      fontFamily: "Inter, sans-serif",
-      backgroundColor: "#f9fafb", // Tailwind: bg-gray-50
-      padding: "32px",             // Tailwind: p-8
-      color: "#111827",            // Tailwind: text-gray-900
-      lineHeight: "1.625",
-    }}
-  >
-    <div
-      style={{
-        backgroundColor: "#ffffff",  // Tailwind: bg-white
-        borderRadius: "0.5rem",      // Tailwind: rounded-lg
-        padding: "32px",             // Tailwind: p-8
-        maxWidth: "600px",
-        margin: "0 auto",
-        boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)", // Tailwind: shadow-sm
-      }}
-    >
-      <h2
-        style={{
-          fontSize: "24px",          // Tailwind: text-2xl
-          fontWeight: "600",         // Tailwind: font-semibold
-          marginBottom: "16px",      // Tailwind: mb-4
-        }}
-      >
-        🎉 Welcome to the newsletter!
-      </h2>
+  <Html>
+    <Tailwind>
+      {/* ✅ Head is required for Tailwind media queries */}
+      <Head />
+      <div className="bg-gray-50 p-6 sm:p-8 font-sans text-gray-900">
+        <div className="bg-white rounded-lg p-6 sm:p-8 shadow-sm max-w-xl mx-auto">
+          <Heading className="text-2xl font-semibold mb-4">
+            🎉 Welcome to the newsletter!
+          </Heading>
 
-      <p style={{ marginBottom: "16px" }}>
-        Dear user,
-      </p>
+          <Text className="mb-4 text-base">Dear user,</Text>
 
-      <p style={{ marginBottom: "16px" }}>
-        Thank you for subscribing! We're thrilled to have you with us. Expect valuable insights, updates, and occasional surprises directly in your inbox.
-      </p>
+          <Text className="mb-4 text-base leading-relaxed">
+            Thank you for subscribing! I'm thrilled to have you with me. Expect valuable insights, updates, and the occasional surprise — straight to your inbox.
+          </Text>
 
-      <p style={{ marginBottom: "32px" }}>
-        If you have questions or suggestions, feel free to reply — I read every message.
-      </p>
+          <Text className="mb-6 text-base leading-relaxed">
+            If you have any questions or suggestions, feel free to explore my site or follow me on social platforms.
+          </Text>
 
-      <p>
-        Warm regards,<br />
-        <strong>Alok Kumar</strong>
-      </p>
-    </div>
+          <Text className="text-base">
+            Warm regards,<br />
+            <strong>Alok Kumar</strong>
+          </Text>
+        </div>
 
-    <p
-      style={{
-        fontSize: "12px",            // Tailwind: text-xs
-        color: "#6b7280",            // Tailwind: text-gray-500
-        marginTop: "32px",
-        textAlign: "center",
-      }}
-    >
-      You’re receiving this email because you subscribed to <a href="whoisalok.tech">whoisalok.tech</a> 
-    </p>
-  </div>
+        <Text className="text-xs text-gray-500 text-center mt-8">
+          You’re receiving this email because you subscribed to <a href="https://whoisalok.tech" className="underline text-blue-500">whoisalok.tech</a>.<br />
+          📭 This is an automated message — please do not reply to this email.
+        </Text>
+      </div>
+    </Tailwind>
+  </Html>
 );

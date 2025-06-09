@@ -48,7 +48,7 @@
       if(emailsetting) {
         try {
           await resend.emails.send({
-            from: "Alok Kumar – whoisalok.tech <welcome@mail.whoisalok.tech>",
+            from: "Alok Kumar <welcome@mail.whoisalok.tech>",
             to: email,
             subject: 'Thanks for subscribing',
             react: <WelcomeTemplate />
@@ -60,8 +60,8 @@
 
       return NextResponse.json({ message: "Successfully Subscribed!" });
 
-      } catch (error) {
-          console.log("Subscribed message: ", error);
+    } catch (error) {
+      console.log("Subscribed message: ", error);
 
       return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
     }
