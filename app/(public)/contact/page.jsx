@@ -31,19 +31,21 @@ export default function ContactPage() {
     setIsSubmitting(true);
     try {
       const res = await fetch('/api/contact', {
-        method: 'POST',
+        method: 'POST', 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
 
+      const resdata = await res.json();
+
       if (res.ok) {
-        toast({ title: 'Message sent!' });
+        toast.success(resdata.message || 'Message sent!' );
         form.reset();
       } else {
-        toast({ title: 'Failed to send message.', variant: 'destructive' });
+        toast.error(resdata.message || 'Failed to send message.');
       }
     } catch (error) {
-      toast({ title: 'Error sending message.', variant: 'destructive' });
+      toast.error('Server error. Try again later.');
     } finally {
       setIsSubmitting(false);
     }
@@ -108,7 +110,7 @@ export default function ContactPage() {
               )}
             />
 
-            <Button type="submit" disabled={isSubmitting} className="w-full py-5.5 dark:bg-blue-600 dark:text-white">
+            <Button type="submit" disabled={isSubmitting} className="w-full py-5.5 dark:bg-blue-600 dark:text-white cursor-pointer">
               {isSubmitting ? 'Sending...' : 'Send Message'}
             </Button>
           </form>

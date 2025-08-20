@@ -2,11 +2,19 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { render } from "@react-email/components";
 import { TelegramReplyTemplates } from "@/emails/TelegramReplyTemplates";
-
+import { rateLimiter } from "@/lib/withRateLimit";
 const resend = new Resend(process.env.RESEND_EMAIL_API);
 
 export async function POST(req) {
   try {
+    const ip = req.headers.get("x-forwared-for")?.split(",")[0]?.trim() || "unknown";
+
+    const { allowed, message: rateLimitMessage } = await rateLimiter(ip);
+    if(!allowed) {
+      return NextResponse.json({ message:rateLimitMessage}, {status:429 })
+    }
+
+
     const body = await req.json();
     console.log("Telegram webhook body received:", JSON.stringify(body, null, 2));
 
@@ -41,7 +49,7 @@ export async function POST(req) {
       from: "Alok Kumar <contact@mail.whoisalok.tech>",
       to: email,
       reply_to: "alokkumar012148@gmail.com", 
-      subject: "Reply from Alok - ",
+      subject: "Reply from Alok ",
       html,
       text,
     });

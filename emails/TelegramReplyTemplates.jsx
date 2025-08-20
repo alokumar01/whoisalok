@@ -40,7 +40,7 @@ export const TelegramReplyTemplates = ({ replyText = "Thank you for reaching out
           <div className="mt-4 mb-6">
             <a
               href="mailto:alokkumar012148@gmail.com"
-              className="inline-block bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-700"
+              className="inline-block bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-700 no underline"
             >
               ✉️ Reply Here...
             </a>

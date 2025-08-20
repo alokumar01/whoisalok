@@ -76,13 +76,13 @@ const Hero = () => {
           transition={{ delay: 1, duration: 0.5 }}
         >
           <a
-            href="/Alok_Kumar_Resume.pdf"
-            // download
+            href="/ALOK_KUMAR_RESUME.pdf"
+            // resume view  
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-gradient-to-r from-indigo-600 to-indigo-800 hover:from-indigo-700 hover:to-indigo-900 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition duration-300"
           >
-            Download Resume
+            View Resume
           </a>
           {/* <a
             href="#contact"

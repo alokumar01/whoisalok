@@ -1,5 +1,4 @@
 // app/layout.jsx
-
 import '../styles/globals.css'
 import CanvasCursor from '../components/CanvasCursor';
 import Navbar from '@/components/Navbar';
@@ -8,6 +7,7 @@ import Welcome from '@/components/Welcome';
 import { Space_Grotesk, Work_Sans, Geist, Great_Vibes } from 'next/font/google';
 import ThemeProviderClient from "@/components/ThemeProviderClient";
 import { Toaster } from "@/components/ui/sonner";
+import ConditionalUI from '@/components/ConditionalUI';
 
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space' });
 const workSans = Work_Sans({ subsets: ['latin'], variable: '--font-work' });
@@ -24,26 +24,24 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning
       className={`${spaceGrotesk.variable} ${workSans.variable} ${geist.variable} ${greatVibes.variable}`}>
       <body className="bg-gradient-to-br from-blue-100 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-950 antialiased text-black dark:text-white">
-        
-        {/* wrapper with flex column layout */}
         <Toaster richColors position="top-right" />
         <div className="flex flex-col min-h-screen">
           <ThemeProviderClient>
-            <Welcome />
-            <Navbar />
-            <CanvasCursor />
+            <ConditionalUI>
+              <Welcome />
+              <Navbar />
+              <CanvasCursor />
+            </ConditionalUI>
+
+            <main className="flex-grow">{children}</main>
+
+            <ConditionalUI>
+              <Footer />
+            </ConditionalUI>
             
-            {/* main content grows to fill remaining space */}
-            <main className="flex-grow">
-              {children}
-            </main>
-            
-            <Footer />
           </ThemeProviderClient>
         </div>
-
       </body>
     </html>
   );
 }
-  

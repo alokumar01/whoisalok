@@ -14,23 +14,16 @@ const ContactForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // console.log('Form Data:', form);
     const {name, email, message} = form;
-    // setTimeout(() => {
-    //   setIsSubmitting(false);
-    //   toast.success('Message sent successfully!');
-    // }, 1000);
-    
+
     try {
-      // isSubmitting(true);
       const res = await fetch('/api/contact', 
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, message })
         }
-      );
-      
+      )
       const data = await res.json();
 
       if (!res.ok) {
@@ -43,11 +36,9 @@ const ContactForm = () => {
 
     } catch (error) {
       toast.error('Server error. Try again later.')
-      
     } finally {
       setIsSubmitting(false);
     }
-
   };
 
   return (

@@ -18,9 +18,7 @@ const ContactformSchema = z.object({
 export async function POST(req) {
     try {
         const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-
         const { allowed, message: rateLimitMessage } = await rateLimiter(ip);
-
         if (!allowed) {
             return NextResponse.json({ message: rateLimitMessage }, {status: 429})
         }
