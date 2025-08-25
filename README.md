@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🌐 Personal Portfolio – [whoisalok.tech](https://whoisalok.tech)
 
-## Getting Started
+A modern and fully responsive portfolio website to showcase my **identity, projects, skills, blogs, and contact information**.  
+Built with a focus on performance, clean design, and interactive features.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Features
+- 🏠 **Personal Branding** – About Me, Skills, and Resume  
+- 💼 **Projects Section** – Highlights of my work with links  
+- 📝 **Blog Integration** – Powered by **Sanity CMS** to write and manage blogs easily  
+- 📩 **Newsletter Subscription** – Stores emails in MongoDB and sends a thank-you mail via **Resend**  
+- 📬 **Contact Form with Telegram Integration** – Instantly get messages on Telegram, reply directly from Telegram to the sender’s email  
+- 🎨 **UI/UX Enhancements** – Dark/Light theme, stylish components from **ShadCN UI** & **Magic UI**, smooth animations with **Framer Motion**  
+- 📱 **Responsive Design** – Optimized for all devices  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
+**Frontend:** Next.js 15, React, Tailwind CSS, Framer Motion, ShadCN UI, Magic UI  
+**Backend:** MongoDB, Next.js API Routes  
+**Email & Notifications:** Resend, Telegram Webhooks  
+**CMS:** Sanity.io  
+**Deployment:** Vercel  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Live Demo
+🔗 [whoisalok.tech](https://whoisalok.tech)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
+---
 
-## Deploy on Vercel
+## 👤 Author
+**Alok Kumar**  
+- Portfolio: [whoisalok.tech](https://whoisalok.tech)  
+- LinkedIn: [linkedin.com/in/alokumar01](https://linkedin.com/in/alokumar01)  
+- GitHub: [github.com/alokumar01](https://github.com/alokumar01)  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+⭐ If you like this project, consider giving it a **star** on GitHub!
