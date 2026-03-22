@@ -1,200 +1,203 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { aboutData } from '@/constants/data';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { BookOpen, Code, Award, Briefcase, BarChart2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Award, BookOpen, Code, Layers } from 'lucide-react';
+import { aboutData } from '@/constants/data';
+import { ShimmerBorder } from '@/components/ui/shimmer-border';
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 18 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45 } },
+};
 
-const SectionWrapper = ({ children, icon, title }) => (
+const SectionBlock = ({ icon, eyebrow, title, children }) => (
   <motion.section
-    className="bg-white/20 dark:bg-[#0f172a]/80 backdrop-blur-lg p-6 sm:p-8 rounded-xl shadow-md"
+    className="space-y-6"
     initial="hidden"
-    animate="visible"
-    variants={{
-      hidden: { opacity: 0, y: 20 },
-      visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-    }}
+    whileInView="visible"
+    viewport={{ once: true, amount: 0.2 }}
+    variants={fadeUp}
   >
-    <h2 className="text-xl sm:text-3xl font-semibold flex items-center gap-2 mb-4 sm:mb-6 text-gray-900 dark:text-white font-geist">
-      {icon} {title}
-    </h2>
+    <div className="space-y-3">
+      <div className="flex items-center gap-3 text-sm font-medium uppercase tracking-[0.18em] text-sky-700 dark:text-sky-300">
+        {icon}
+        <span>{eyebrow}</span>
+      </div>
+      <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+        {title}
+      </h2>
+    </div>
     {children}
   </motion.section>
 );
 
 export default function About() {
-  const { bio, education, skills, projects, achievements, certifications, codingProfiles: staticProfiles,} = aboutData;
-
-  const [codingProfiles, setCodingProfiles] = useState([]);
-
-  useEffect(() => {
-    const fetchProfiles = async () => {
-      const dummyData = [
-        {
-          platform: 'LeetCode',
-          stats: '150+ problems solved, Top 10% globally',
-          link: 'https://leetcode.com/u/your-username',
-        },
-        {
-          platform: 'GitHub',
-          stats: '15+ repos, 200+ commits',
-          link: 'https://github.com/your-username',
-        },
-        {
-          platform: 'GeeksforGeeks',
-          stats: '100+ problems solved',
-          link: 'https://geeksforgeeks.org/user/your-username',
-        },
-      ];
-      setCodingProfiles(dummyData);
-    };
-    fetchProfiles();
-  }, []);
-
-  // Uncomment this block if you use a real API
-  // const fetcher = url => fetch(url).then(res => res.json());
-  // const { data: codingProfiles, error, isLoading } = useSWR('/api/coding-profiles', fetcher);
+  const { bio, focusAreas, education, skills, achievements, certifications } = aboutData;
 
   return (
-    <div className="min-h-screen py-25 px-4 sm:px-6 md:px-10 lg:px-16 bg-gradient-to-b from-blue-100 to-blue-50 dark:from-[#0f172a] dark:to-[#131f3c] text-gray-900 dark:text-white " style={{ fontFamily: 'var(--font-geist)' }}>
-      <div className="max-w-6xl mx-auto space-y-16 sm:space-y-20 ">
-        {/* Bio */}
+    <main
+      className="px-6 py-16 pt-28 text-slate-900 dark:text-slate-100 sm:pt-32"
+      style={{ fontFamily: 'var(--font-geist)' }}
+    >
+      <div className="mx-auto flex max-w-5xl flex-col gap-16">
         <motion.section
-          className="flex flex-col items-center text-center space-y-4 sm:space-y-6 dark:bg-gradient-to-br from-gray-900 via-gray-950 to-gray-850 p-6 sm:p-8 rounded-xl shadow-2xl dark:border-b-2"
           initial="hidden"
           animate="visible"
-          variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+          variants={fadeUp}
+          className="space-y-8"
         >
-          <Image
-            src={bio.photo}
-            alt={bio.name}
-            width={300}
-            height={200}
-            priority={true}
-            className="rounded-full border-4 border-blue-400 dark:border-blue-500 shadow-xl w-[200px] md:w-[300px] "
-          />
-          <h1 className="text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400 font-great-vibes whitespace-nowrap leading-tight tracking-tight text-center">
-            {bio.name}
-          </h1>
-          <h2 className="text-lg sm:text-2xl text-indigo-700 dark:text-blue-400 font-bold">{bio.tagline}</h2>
-          <p className="pl-2 md:pl-10 text-left leading-relaxed tracking-widest text-sm sm:text-base font-semibold text-gray-700 dark:text-gray-300 max-w-2xl">{bio.description}</p>
-          <div className="flex flex-wrap justify-center gap-4">
-            {bio.ctas.map((cta) => (
-              <Link
-                key={cta.href}
-                href={cta.href}
-                className={`px-5 py-2.5 rounded-full font-medium transition ${
-                  cta.primary
-                    ? 'bg-indigo-700 text-white hover:bg-indigo-800 shadow-md'
-                    : 'border border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/30'
-                }`}
-              >
-                {cta.label}
-              </Link>
-            ))}
-          </div>
+          <ShimmerBorder contentClassName="surface-panel overflow-hidden p-8 sm:p-10">
+            <div className="grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)] lg:items-center">
+              <div className="flex justify-center lg:justify-start">
+                <Image
+                  src={bio.photo}
+                  alt={bio.name}
+                  width={320}
+                  height={320}
+                  priority
+                  className="h-44 w-44 rounded-3xl object-cover ring-1 ring-slate-200 dark:ring-white/10 sm:h-52 sm:w-52"
+                />
+              </div>
+
+              <div className="space-y-5 text-center lg:text-left">
+                <div className="space-y-3">
+                  <p className="section-kicker">About</p>
+                  <h1 className="text-4xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
+                    {bio.name}
+                  </h1>
+                  <p className="text-lg font-medium text-slate-700 dark:text-slate-200 sm:text-xl">
+                    {bio.tagline}
+                  </p>
+                </div>
+
+                <p className="text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
+                  {bio.description}
+                </p>
+
+                <div className="flex flex-col justify-center gap-3 sm:flex-row lg:justify-start">
+                  {bio.ctas.map((cta) => (
+                    <Link
+                      key={cta.href}
+                      href={cta.href}
+                      className={cta.primary ? 'primary-button' : 'secondary-button'}
+                    >
+                      {cta.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </ShimmerBorder>
         </motion.section>
 
-        {/* Education */}
-        <SectionWrapper icon={<BookOpen size={24} />} title="Education">
-          <div className="space-y-6 max-w-6xl">
-            {education.map((edu, index) => (
-              <div key={index} className="bg-white/20 dark:bg-white/5 p-5 border rounded-lg shadow-inner space-y-2">
-
-                <div className="flex flex-col sm:flex-row sm:justify-between">
-                  <h3 className="text-lg sm:text-xl font-semibold">{edu.degree}</h3>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">{edu.duration}</span>
-                </div>
-
-                <p className="text-indigo-700 dark:text-indigo-400 font-medium">{edu.institution}</p>
-
-                <div>
-                  <h4 className="text-sm font-semibold mb-1 text-gray-700 dark:text-gray-300">Coursework:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {edu.coursework.map((course) => (
-                      <span key={course} className="px-3 py-1 rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300 text-xs sm:text-sm">
-                        {course}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
+        <SectionBlock
+          icon={<Layers className="h-4 w-4" />}
+          eyebrow="Focus Areas"
+          title="How I approach engineering work"
+        >
+          <div className="grid gap-4 md:grid-cols-3">
+            {focusAreas.map((item) => (
+              <div key={item.title} className="surface-card surface-card-hover p-6">
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{item.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{item.description}</p>
               </div>
             ))}
           </div>
-        </SectionWrapper>
+        </SectionBlock>
 
-        {/* Skills */}
-        <SectionWrapper icon={<Code size={24} />} title="Skills">
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 sm:gap-4">
+        <SectionBlock
+          icon={<BookOpen className="h-4 w-4" />}
+          eyebrow="Education"
+          title="Academic background"
+        >
+          <div className="space-y-4">
+            {education.map((edu) => (
+              <div key={`${edu.degree}-${edu.duration}`} className="surface-card p-6 sm:p-7">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{edu.degree}</h3>
+                    <p className="text-sm font-medium text-sky-700 dark:text-sky-300">{edu.institution}</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">{edu.level}</p>
+                  </div>
+                  <span className="tag-chip w-fit">{edu.duration}</span>
+                </div>
+
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {edu.coursework.map((course) => (
+                    <span key={course} className="tag-chip">
+                      {course}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </SectionBlock>
+
+        <SectionBlock
+          icon={<Code className="h-4 w-4" />}
+          eyebrow="Skills"
+          title="Technologies I work with"
+        >
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {skills.map((skill) => (
               <div
                 key={skill}
-                className=" dark:bg-[#131f3c]/50 p-3 rounded-lg text-center shadow font-medium text-sm sm:text-base border-l-3 border-indigo-500 dark:border-l-3 dark:border-green-700"
+                className="surface-card surface-card-hover flex items-center justify-center px-4 py-4 text-center text-sm font-medium text-slate-700 dark:text-slate-200"
               >
                 {skill}
               </div>
             ))}
           </div>
-        </SectionWrapper>
+        </SectionBlock>
 
-        {/* Projects */}
-        {/* <SectionWrapper icon={<Briefcase size={24} />} title="Projects">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {projects.map(({ name, description, tech, link }) => (
-              <div key={name} className="bg-white/20 dark:bg-[#0f172a]/60 p-5 rounded-lg shadow space-y-3">
-                <h3 className="text-lg sm:text-xl font-semibold">{name}</h3>
-                <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300">{description}</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400"><strong>Tech:</strong> {tech.join(', ')}</p>
-                <Link href={link} className="text-blue-600 dark:text-blue-400 hover:underline">View Project</Link>
+        <SectionBlock
+          icon={<Award className="h-4 w-4" />}
+          eyebrow="Achievements"
+          title="Experience and milestones"
+        >
+          <div className="grid gap-4 md:grid-cols-2">
+            {achievements.map((item) => (
+              <div key={item.title} className="surface-card p-6">
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{item.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{item.description}</p>
               </div>
             ))}
           </div>
-        </SectionWrapper> */}
+        </SectionBlock>
 
-        {/* Achievements */}
-        <SectionWrapper icon={<Award size={24} />} title="Achievements">
-          <ul className="list-disc pl-5 space-y-4 text-sm sm:text-base">
-            {achievements.map(({ title, description }) => (
-              <li key={title}>
-                <strong>{title}</strong>: {description}
-              </li>
-            ))}
-          </ul>
-        </SectionWrapper>
-
-        {/* Certifications */}
-        <SectionWrapper icon={<Award size={24} />} title="Certifications">
-          <ul className="list-disc pl-5 space-y-4 text-sm sm:text-base">
-            {certifications.map(({ title, issuer, year, link }) => (
-              <li key={title}>
-                <strong>{title}</strong> ({issuer}, {year}) —{' '}
-                <Link href={link} target="_blank" className="text-blue-600 dark:text-blue-400 hover:underline">
-                  View
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </SectionWrapper>
-
-        {/* Coding Profiles */}
-        {/* <SectionWrapper icon={<BarChart2 size={24} />} title="Coding Profiles">
+        <SectionBlock
+          icon={<Award className="h-4 w-4" />}
+          eyebrow="Certifications"
+          title="Courses and credentials"
+        >
           <div className="space-y-4">
-            {codingProfiles.map(({ platform, stats, link }) => (
-              <div key={platform}>
-                <h3 className="text-lg font-semibold">{platform}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">{stats}</p>
-                <Link href={link} target="_blank" className="text-blue-600 dark:text-blue-400 hover:underline">
-                  Visit Profile
+            {certifications.map((item) => (
+              <div
+                key={item.title}
+                className="surface-card surface-card-hover flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div className="space-y-1">
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{item.title}</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-300">
+                    {item.issuer} • {item.year}
+                  </p>
+                </div>
+
+                <Link
+                  href={item.link}
+                  target="_blank"
+                  className="secondary-button w-fit"
+                >
+                  View Credential
                 </Link>
               </div>
             ))}
           </div>
-        </SectionWrapper> */}
+        </SectionBlock>
       </div>
-    </div>
+    </main>
   );
 }

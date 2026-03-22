@@ -1,6 +1,30 @@
-import Link from "next/link"
-import { Card, CardHeader, CardContent } from "@/components/ui/card"
-import { sanityClient, urlFor } from "@/lib/sanityClient"
+import Link from 'next/link';
+import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
+import { sanityClient, urlFor } from '@/lib/sanityClient';
+import { buildMetadata } from '@/lib/site';
+
+export const metadata = buildMetadata({
+  title: 'Blog',
+  description: 'Technical writing on backend workflows, full-stack development, APIs, and lessons from building modern web applications.',
+  path: '/blog',
+  keywords: ['Developer Blog', 'Next.js Blog', 'Backend Development', 'Technical Writing'],
+});
+
+const getExcerpt = (body) => {
+  if (!Array.isArray(body)) return '';
+
+  const text = body
+    .filter((block) => block?._type === 'block')
+    .flatMap((block) => block.children || [])
+    .map((child) => child.text || '')
+    .join(' ')
+    .trim();
+
+  if (!text) return 'Read the latest article and explore the full write-up.';
+
+  return text.length > 150 ? `${text.slice(0, 150)}...` : text;
+};
 
 export default async function BlogPage() {
   const query = `*[_type == "post"] | order(publishedAt desc){
@@ -8,58 +32,76 @@ export default async function BlogPage() {
     title,
     slug,
     mainImage,
-    publishedAt
-  }`
-  const posts = await sanityClient.fetch(query)
+    publishedAt,
+    body
+  }`;
+  const posts = await sanityClient.fetch(query);
 
   return (
-    <main className="container mx-auto px-6 py-20">
-      {/* Divider */}
-      <hr className="dark:border-gray-700 border-gray-300  mb-8" />
+    <main
+      className="px-6 py-16 pt-28 text-slate-900 dark:text-slate-100 sm:pt-32"
+      style={{ fontFamily: 'var(--font-geist)' }}
+    >
+      <div className="mx-auto flex max-w-5xl flex-col gap-14">
+        <section className="space-y-4 text-center">
+          <p className="section-kicker">Blog</p>
+          <h1 className="text-4xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
+            Writing on development and product thinking
+          </h1>
+          <p className="mx-auto max-w-3xl text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
+            A collection of posts on backend workflows, full-stack development, and lessons learned while building practical web projects.
+          </p>
+        </section>
 
-      <h1 className="text-3xl md:text-4xl font-bold mb-12 text-gray-900 dark:text-white text-center">
-        Latest Blogs
-      </h1>
-
-      <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {posts.map((post) => (
-          <Link
-            key={post._id}
-            href={`/blog/${encodeURIComponent(post.slug.current)}`}
-            prefetch={false}
-          >
-            <Card className="group h-full flex flex-col hover:shadow-xl transition-all duration-300 cursor-pointer rounded-xl overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-              
-              {/* Image Section */}
+        <section className="grid gap-6 md:grid-cols-2">
+          {posts.map((post) => (
+            <Link
+              key={post._id}
+              href={`/blog/${encodeURIComponent(post.slug.current)}`}
+              prefetch={false}
+              className="group surface-card surface-card-hover overflow-hidden"
+            >
               {post.mainImage && (
-                <CardHeader className="p-0 m-0">
-                  <img
-                    src={urlFor(post.mainImage).width(800).height(450).url()}
-                    alt={post.title || "Blog cover image"}
-                    className="w-full h-48 md:h-56 object-cover transition-transform duration-300 group-hover:scale-105"
-                    loading="lazy"
+                <div className="overflow-hidden">
+                  <Image
+                    src={urlFor(post.mainImage).width(900).height(520).url()}
+                    alt={post.title || 'Blog cover image'}
+                    width={900}
+                    height={520}
+                    className="h-52 w-full object-cover transition duration-500 group-hover:scale-[1.02]"
                   />
-                </CardHeader>
+                </div>
               )}
 
-              {/* Content */}
-              <CardContent className="flex flex-col flex-grow ">
-                <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
-                  Last Updated:{" "}
-                  {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </p>
-                <h2 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors line-clamp-2">
-                  {post.title}
-                </h2>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
+              <div className="flex h-full flex-col gap-5 p-6">
+                <div className="flex items-center justify-between gap-3 text-sm text-slate-500 dark:text-slate-400">
+                  <span className="tag-chip">
+                    {new Date(post.publishedAt).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })}
+                  </span>
+                </div>
+
+                <div className="space-y-3">
+                  <h2 className="text-xl font-semibold tracking-tight text-slate-900 transition-colors group-hover:text-sky-700 dark:text-white dark:group-hover:text-sky-300 sm:text-2xl">
+                    {post.title}
+                  </h2>
+                  <p className="text-sm leading-7 text-slate-600 dark:text-slate-300">
+                    {getExcerpt(post.body)}
+                  </p>
+                </div>
+
+                <div className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-sky-700 dark:text-sky-300">
+                  Read Article
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </div>
+              </div>
+            </Link>
+          ))}
+        </section>
       </div>
     </main>
-  )
+  );
 }

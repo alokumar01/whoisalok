@@ -1,42 +1,19 @@
-import { NextResponse } from "next/server";
-import Newsletter from "@/lib/models/Newsletter";
-import { z } from "zod";
-import dbConnect from "@/lib/mongodb";
-import { rateLimiter } from "@/lib/withRateLimit"; 
-import { Resend } from "resend";
-import { WelcomeTemplate } from "@/emails/WelcomeTemplate";
-import SiteSetting from "@/lib/models/SiteSetting";
+import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
+import Newsletter from '@/lib/models/Newsletter';
+import dbConnect from '@/lib/mongodb';
+import { rateLimiter } from '@/lib/withRateLimit';
+import { WelcomeTemplate } from '@/emails/WelcomeTemplate';
+import SiteSetting from '@/lib/models/SiteSetting';
+import { newsletterEmailSchema } from '@/lib/validations';
 
-const resend = new Resend(process.env.RESEND_EMAIL_API);
-
-// Track last Redis ping
-let lastPing = 0;
-const PING_INTERVAL = 30 * 60 * 1000; // 30 minutes
-
-async function pingRedisIfNeeded() {
-  const now = Date.now();
-  if (now - lastPing > PING_INTERVAL) {
-    try {
-      const { redis } = await import("@/lib/withRateLimit"); // import your Redis instance
-      await redis.ping();
-      lastPing = now;
-      console.log("Redis ping successful");
-    } catch (err) {
-      console.warn("Redis ping failed:", err.message);
-    }
-  }
-}
-
-const EmailSchema = z.object({
-  email: z.string().email(),
-});
+const resend = process.env.RESEND_EMAIL_API
+  ? new Resend(process.env.RESEND_EMAIL_API)
+  : null;
 
 export async function POST(req) {
   try {
-    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-
-    // Ping Redis if needed
-    await pingRedisIfNeeded();
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
 
     const { allowed, message } = await rateLimiter(ip);
     if (!allowed) {
@@ -44,9 +21,9 @@ export async function POST(req) {
     }
 
     const body = await req.json();
-    const result = EmailSchema.safeParse(body);
+    const result = newsletterEmailSchema.safeParse(body);
     if (!result.success) {
-      return NextResponse.json({ message: "Invalid email" }, { status: 400 });
+      return NextResponse.json({ message: 'Invalid email' }, { status: 400 });
     }
 
     const { email } = result.data;
@@ -54,32 +31,35 @@ export async function POST(req) {
 
     const exist = await Newsletter.findOne({ email }).lean();
     if (exist) {
-      return NextResponse.json({ message: "Already Subscribed, Use another Email!" }, { status: 400 });
+      return NextResponse.json(
+        { message: 'Already subscribed. Please use another email address.' },
+        { status: 400 }
+      );
     }
 
     await Newsletter.create({ email, subscribedAt: new Date() });
 
-    // Check admin email sending control
-    const setting = await SiteSetting.findById("global").lean();
+    const setting = await SiteSetting.findById('global').lean();
     const emailsetting = setting?.emailSending ?? true;
 
-    if (emailsetting) {
+    if (emailsetting && resend) {
       try {
         await resend.emails.send({
-          from: "Alok Kumar <welcome@mail.whoisalok.tech>",
+          from: 'Alok Kumar <welcome@mail.whoisalok.tech>',
           to: email,
           subject: 'Thanks for subscribing',
-          react: <WelcomeTemplate />
+          react: <WelcomeTemplate />,
         });
       } catch (error) {
-        console.log("welcome email failed", error);
+        console.error('Welcome email failed:', error);
       }
+    } else if (emailsetting) {
+      console.error('Welcome email skipped because RESEND_EMAIL_API is missing.');
     }
 
-    return NextResponse.json({ message: "Successfully Subscribed!" });
-
+    return NextResponse.json({ message: 'Successfully subscribed!' });
   } catch (error) {
-    console.log("Subscribed message: ", error);
-    return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
+    console.error('Newsletter subscription failed:', error);
+    return NextResponse.json({ message: 'Something went wrong' }, { status: 500 });
   }
 }

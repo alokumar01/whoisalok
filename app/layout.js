@@ -8,6 +8,7 @@ import { Space_Grotesk, Work_Sans, Geist, Great_Vibes } from 'next/font/google';
 import ThemeProviderClient from "@/components/ThemeProviderClient";
 import { Toaster } from "@/components/ui/sonner";
 import ConditionalUI from '@/components/ConditionalUI';
+import { getOgImage, siteConfig } from '@/lib/site';
 
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space' });
 const workSans = Work_Sans({ subsets: ['latin'], variable: '--font-work' });
@@ -15,15 +16,51 @@ const geist = Geist({ weight: ['400', '600'], subsets: ['latin'], variable: '--f
 const greatVibes = Great_Vibes({ subsets: ['latin'], weight: '400', variable: '--font-great-vibes' });
 
 export const metadata = {
-  title: 'Alok | Portfolio',
-  description: 'Developer & Creative Portfolio',
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: siteConfig.title,
+    template: '%s | Alok Kumar',
+  },
+  description: siteConfig.description,
+  keywords: siteConfig.keywords,
+  authors: siteConfig.authors,
+  creator: siteConfig.creator,
+  applicationName: siteConfig.siteName,
+  openGraph: {
+    title: siteConfig.title,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    siteName: siteConfig.siteName,
+    locale: siteConfig.locale,
+    type: 'website',
+    images: [getOgImage()],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: [new URL(siteConfig.ogImage, siteConfig.url).toString()],
+    creator: siteConfig.creator,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
+  category: 'technology',
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning
       className={`${spaceGrotesk.variable} ${workSans.variable} ${geist.variable} ${greatVibes.variable}`}>
-      <body className="bg-gradient-to-br from-blue-100 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-950 antialiased text-black dark:text-white">
+      <body className="bg-transparent antialiased text-slate-900 dark:text-slate-100">
         <Toaster richColors position="top-right" />
         <div className="flex flex-col min-h-screen">
           <ThemeProviderClient>
@@ -33,7 +70,7 @@ export default function RootLayout({ children }) {
               <CanvasCursor />
             </ConditionalUI>
 
-            <main className="flex-grow">{children}</main>
+            <main className="flex-grow overflow-x-hidden">{children}</main>
 
             <ConditionalUI>
               <Footer />

@@ -19,7 +19,7 @@ export const TelegramReplyTemplates = ({ replyText = "Thank you for reaching out
 
         <div className="flex space-x-4 mb-6">
           <a
-            href="https://github.com/yourgithub"
+            href="https://github.com/alokumar01"
             className="text-gray-700 hover:text-black"
             target="_blank"
             rel="noopener noreferrer"
@@ -27,7 +27,7 @@ export const TelegramReplyTemplates = ({ replyText = "Thank you for reaching out
             <EmailIcon type="github" />
           </a>
           <a
-            href="https://linkedin.com/in/yourlinkedin"
+            href="https://linkedin.com/in/alokumar01"
             className="text-gray-700 hover:text-blue-700"
             target="_blank"
             rel="noopener noreferrer"
@@ -59,4 +59,3 @@ export const TelegramReplyTemplates = ({ replyText = "Thank you for reaching out
     </Tailwind>
   </Html>
 );
-

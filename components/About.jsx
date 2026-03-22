@@ -1,11 +1,10 @@
 "use client";
+
 import React from "react";
 import Link from "next/link";
-import TerminalBox from "./TerminalBox";
 import { MoveRightIcon } from "lucide-react";
 import { motion } from "framer-motion";
 
-// Animation settings
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
@@ -20,56 +19,84 @@ const stagger = {
   },
 };
 
+const focusAreas = [
+  {
+    title: "Backend Systems",
+    description: "Designing scalable server-side flows, structured APIs, and data models that support reliable product growth.",
+  },
+  {
+    title: "Full-Stack Delivery",
+    description: "Connecting backend logic with responsive interfaces so the final product feels smooth, clear, and production-ready.",
+  },
+  {
+    title: "Developer Mindset",
+    description: "Prioritizing maintainable code, thoughtful architecture, and practical engineering choices over unnecessary complexity.",
+  },
+];
+
 const About = () => {
   return (
     <motion.section
-      className="max-w-6xl md:dark:max-w-5xl mx-auto px-6 md:px-20 py-20 dark:bg-gradient-to-br from-gray-900 via-gray-950 to-gray-800 rounded-lg "
+      className="section-shell"
       variants={stagger}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
       style={{ fontFamily: 'var(--font-geist)' }}
     >
-      {/* Section Title */}
-      <motion.div className="text-center mb-12" variants={fadeInUp}>
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-          About Me
-        </h2>
-        <div className="mt-3 flex justify-center">
-          <hr className="w-20 border-2 border-indigo-500 dark:border-indigo-400 rounded" />
-        </div>
-      </motion.div>
-
-      {/* Content Grid */}  
-      <motion.div className="grid md:grid-cols-2 gap-10 items-center" variants={stagger}>
-        {/* Left Column - Text and Button */}
-        <motion.div variants={fadeInUp}>
-          <p className="text-gray-600 dark:text-gray-300 text-[20px] leading-loose mt-7 text-left px-2 mb-20">
-            I’m Alok Kumar, a Full Stack Developer who builds fast and clean web apps
-            using React, Next.js, and Tailwind CSS. I turn ideas into smooth user
-            experiences.
+      <div className="section-inner">
+        <motion.div className="mb-12 space-y-4 text-center" variants={fadeInUp}>
+          <p className="section-kicker">About</p>
+          <h2 className="section-title">Building products with stronger backend foundations</h2>
+          <p className="section-copy mx-auto max-w-3xl">
+            I enjoy creating full-stack applications that balance dependable backend architecture with clean, modern presentation on the frontend.
           </p>
+        </motion.div>
 
-
-          {/* CTA Button */}
-          <div className="flex justify-center md:justify-start">
-            <Link
-                href="/about"
-                className="group inline-block bg-gradient-to-r from-indigo-600 to-indigo-800 text-white px-6 py-3 rounded-full hover:from-indigo-700 hover:to-indigo-900 transition-all duration-300 shadow-md"
-              >
-                <span className="flex items-center gap-2">
+        <motion.div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]" variants={stagger}>
+          <motion.div className="surface-panel p-8 sm:p-10" variants={fadeInUp}>
+            <div className="space-y-6">
+              <p className="text-base leading-8 text-slate-600 dark:text-slate-300 sm:text-lg">
+                I’m Alok Kumar, a full-stack developer focused on building reliable backend systems, maintainable APIs, and modern web applications that are easy to use and scale.
+              </p>
+              <p className="text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
+                My work usually starts with structuring the data flow, planning backend responsibilities, and making sure the product logic is stable before layering on a polished interface. I care about code clarity, thoughtful architecture, and building projects that feel production-ready instead of just visually complete.
+              </p>
+              <div className="flex justify-center md:justify-start">
+                <Link href="/about" className="group secondary-button">
                   More About Me
-                  <MoveRightIcon className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 w-5" />
-                </span>
-            </Link>
-          </div>
-        </motion.div>
+                  <MoveRightIcon className="w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                </Link>
+              </div>
+            </div>
+          </motion.div>
 
-        {/* Right Column - Terminal */}
-        <motion.div className="flex justify-center md:justify-end" variants={fadeInUp}>
-          <TerminalBox />
+          <motion.div className="surface-panel p-8" variants={fadeInUp}>
+            <div className="space-y-6">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+                  Focus Areas
+                </p>
+                <h3 className="mt-3 text-2xl font-semibold text-slate-900 dark:text-white">
+                  What I bring to projects
+                </h3>
+              </div>
+
+              <div className="space-y-4">
+                {focusAreas.map((item) => (
+                  <div
+                    key={item.title}
+                    className="rounded-2xl border border-slate-200/70 bg-slate-50/70 p-5 dark:border-white/10 dark:bg-white/[0.04]"
+                  >
+                    <h4 className="text-base font-semibold text-slate-900 dark:text-white">{item.title}</h4>
+                    <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{item.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
     </motion.section>
   );
 };

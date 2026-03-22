@@ -1,64 +1,153 @@
-import { NextResponse } from "next/server";
-import dbConnect from "@/lib/mongodb";
-import { rateLimiter } from "@/lib/withRateLimit";
-import Contactform from "@/lib/models/Contactform";
-import { z } from "zod";
-import { sendTelegramMessage } from "@/lib/sendTegramMessage";
-import { Resend } from "resend";
-import { ContactThanksTemplate } from "@/emails/ContactThanksTemplate";
+import { after, NextResponse } from 'next/server';
+import { Resend } from 'resend';
+import dbConnect from '@/lib/mongodb';
+import { rateLimiter } from '@/lib/withRateLimit';
+import ContactForm from '@/lib/models/ContactForm';
+import {
+  formatContactTelegramMessage,
+  sendTelegramMessage,
+} from '@/lib/sendTelegramMessage';
+import { contactFormSchema } from '@/lib/validations';
+import { ContactThanksTemplate } from '@/emails/ContactThanksTemplate';
+import { ContactNotificationTemplate } from '@/emails/ContactNotificationTemplate';
 
-const resend = new Resend(process.env.RESEND_EMAIL_API);
+const resend = process.env.RESEND_EMAIL_API
+  ? new Resend(process.env.RESEND_EMAIL_API)
+  : null;
 
-const ContactformSchema = z.object({
-    name: z.string().min(1, "Name is required"),
-    email: z.string().email(),
-    message: z.string().min(1, "Message is required"),
-});
+const ownerEmail = process.env.CONTACT_NOTIFICATION_EMAIL || 'alokkumar012148@gmail.com';
+
+function getClientIp(req) {
+  return (
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    req.headers.get('x-real-ip') ||
+    'unknown'
+  );
+}
+
+async function saveContactMessage({ name, email, message, timestamp }) {
+  await dbConnect();
+  await ContactForm.create({
+    name,
+    email,
+    message,
+    timestamp,
+  });
+}
+
+async function sendAutoReplyEmail({ name, email }) {
+  if (!resend) {
+    console.error('Contact auto-reply email skipped because RESEND_EMAIL_API is missing.');
+    return;
+  }
+
+  await resend.emails.send({
+    from: 'Alok Kumar <notify@mail.whoisalok.tech>',
+    to: email,
+    subject: 'Thanks for reaching out to Alok Kumar',
+    react: <ContactThanksTemplate name={name} />,
+  });
+}
+
+async function sendOwnerNotificationEmail({ name, email, message, timestamp }) {
+  if (!resend) {
+    console.error('Contact owner notification email skipped because RESEND_EMAIL_API is missing.');
+    return;
+  }
+
+  await resend.emails.send({
+    from: 'Alok Kumar <notify@mail.whoisalok.tech>',
+    to: ownerEmail,
+    replyTo: email,
+    subject: `New portfolio contact from ${name}`,
+    react: (
+      <ContactNotificationTemplate
+        name={name}
+        email={email}
+        message={message}
+        timestamp={timestamp.toISOString()}
+      />
+    ),
+  });
+}
+
+async function sendContactTelegramNotification({ name, email, message, timestamp }) {
+  const telegramResult = await sendTelegramMessage(
+    formatContactTelegramMessage({ name, email, message, timestamp })
+  );
+
+  if (!telegramResult.ok) {
+    console.error('Contact Telegram notification failed:', telegramResult.error);
+  }
+}
+
+async function runBackgroundTask(label, task) {
+  try {
+    await task();
+  } catch (error) {
+    console.error(label, error);
+  }
+}
+
+function queueContactProcessing(payload) {
+  after(async () => {
+    await Promise.allSettled([
+      runBackgroundTask('Contact form database write failed:', async () => {
+        await saveContactMessage(payload);
+      }),
+      runBackgroundTask('Contact Telegram notification failed:', async () => {
+        await sendContactTelegramNotification(payload);
+      }),
+      runBackgroundTask('Contact auto-reply email failed:', async () => {
+        await sendAutoReplyEmail(payload);
+      }),
+      runBackgroundTask('Contact owner notification email failed:', async () => {
+        await sendOwnerNotificationEmail(payload);
+      }),
+    ]);
+  });
+}
 
 export async function POST(req) {
-    try {
-        const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-        const { allowed, message: rateLimitMessage } = await rateLimiter(ip);
-        if (!allowed) {
-            return NextResponse.json({ message: rateLimitMessage }, {status: 429})
-        }
+  let body;
 
-        const body = await req.json();
-        const result =  ContactformSchema.safeParse(body)
+  try {
+    body = await req.json();
+  } catch (error) {
+    return NextResponse.json({ message: 'Invalid request body.' }, { status: 400 });
+  }
 
-        if (!result.success) {
-            return NextResponse.json({ message: "Invalid input"} , { status: 400 });
-        }
+  const validationResult = contactFormSchema.safeParse(body);
 
-        const { name, email, message } = result.data;
-        await dbConnect();
+  if (!validationResult.success) {
+    const validationMessage =
+      validationResult.error.issues[0]?.message || 'Invalid input.';
 
-        await Contactform.create({ 
-            name, 
-            email, 
-            message, 
-            messagedAt: new Date(), 
-        })
+    return NextResponse.json({ message: validationMessage }, { status: 400 });
+  }
 
-        
-        // Sending data to telegram bot
-        await sendTelegramMessage (
-            `📬 <b>New Contact Message</b>\n\n👤 <b>Name:</b> ${name}\n📧 <b>Email:</b> ${email}\n📝 <b>Message:</b>\n${message}`
-        );
-        
-        await resend.emails.send({
-            from: "Alok Kumar <notify@mail.whoisalok.tech>",
-            to: email,
-            subject: "Thanks for contacting me!",
-            react: <ContactThanksTemplate name={name} />,
-        });
+  const ip = getClientIp(req);
+  const { allowed, message: rateLimitMessage } = await rateLimiter(ip);
 
+  if (!allowed) {
+    return NextResponse.json({ message: rateLimitMessage }, { status: 429 });
+  }
 
-        return NextResponse.json({ message: "Successfully Sent Message" })
+  const { name, email, message } = validationResult.data;
+  const timestamp = new Date();
 
-    } catch (error) {
-        console.log("message sent successfully: ", error);
+  try {
+    queueContactProcessing({ name, email, message, timestamp });
+  } catch (error) {
+    console.error('Contact background processing failed to start:', error);
+    return NextResponse.json(
+      { message: 'Unable to process your message right now.' },
+      { status: 500 }
+    );
+  }
 
-        return NextResponse.json({ message: "Something went wrong" }, {status: 500 });
-    }
+  return NextResponse.json(
+    { message: 'Your message has been received successfully.' },
+    { status: 200 }
+  );
 }

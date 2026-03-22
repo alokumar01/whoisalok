@@ -1,68 +1,122 @@
-import { NextResponse } from "next/server";
-import { Resend } from "resend";
-import { render } from "@react-email/components";
-import { TelegramReplyTemplates } from "@/emails/TelegramReplyTemplates";
-import { rateLimiter } from "@/lib/withRateLimit";
-const resend = new Resend(process.env.RESEND_EMAIL_API);
+import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
+import { TelegramReplyTemplates } from '@/emails/TelegramReplyTemplates';
+import { rateLimiter } from '@/lib/withRateLimit';
+import { sendTelegramMessage } from '@/lib/sendTelegramMessage';
+import { telegramReplySchema } from '@/lib/validations';
+
+const resend = process.env.RESEND_EMAIL_API
+  ? new Resend(process.env.RESEND_EMAIL_API)
+  : null;
+
+function getClientIp(req) {
+  return (
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    req.headers.get('x-real-ip') ||
+    'unknown'
+  );
+}
+
+async function notifyTelegram(chatId, text) {
+  if (!chatId) return;
+
+  const result = await sendTelegramMessage(text, { chatId });
+  if (!result.ok) {
+    console.error('Telegram webhook feedback message failed:', result.error);
+  }
+}
 
 export async function POST(req) {
+  let body;
+
   try {
-    const ip = req.headers.get("x-forwared-for")?.split(",")[0]?.trim() || "unknown";
+    body = await req.json();
+  } catch (error) {
+    return NextResponse.json({ ok: false, error: 'Invalid request body.' }, { status: 400 });
+  }
 
-    const { allowed, message: rateLimitMessage } = await rateLimiter(ip);
-    if(!allowed) {
-      return NextResponse.json({ message:rateLimitMessage}, {status:429 })
-    }
+  const ip = getClientIp(req);
+  const { allowed, message: rateLimitMessage } = await rateLimiter(ip);
 
+  if (!allowed) {
+    return NextResponse.json({ ok: false, error: rateLimitMessage }, { status: 429 });
+  }
 
-    const body = await req.json();
-    console.log("Telegram webhook body received:", JSON.stringify(body, null, 2));
+  const chatId = body?.message?.chat?.id;
+  const commandText = body?.message?.text?.trim() || '';
 
-    const message = body?.message?.text || "";
-    if (!message.startsWith("/reply:")) {
-      console.log("Ignored message:", message);
-      return NextResponse.json({ ok: true, message: "Ignored non-reply command" });
-    }
+  if (!commandText.startsWith('/reply:')) {
+    return NextResponse.json({ ok: true, message: 'Ignored non-reply command.' }, { status: 200 });
+  }
 
-    const [, content] = message.split("/reply:");
-    if (!content || !content.includes("::")) {
-      return NextResponse.json({ ok: false, error: "Invalid format. Use /reply:email::message" }, { status: 400 });
-    }
+  const commandPayload = commandText.slice('/reply:'.length);
+  const separatorIndex = commandPayload.indexOf('::');
 
-    const [emailRaw, replyRaw] = content.split("::");
-    const email = emailRaw.trim();
-    const replyText = replyRaw?.trim();
+  if (separatorIndex === -1) {
+    const errorMessage = 'Invalid format. Use /reply:email::message';
+    await notifyTelegram(chatId, `⚠️ ${errorMessage}`);
+    return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
+  }
 
-    if (!email || !replyText) {
-      return NextResponse.json({ ok: false, error: "Missing email or message" }, { status: 400 });
-    }
+  const email = commandPayload.slice(0, separatorIndex).trim();
+  const replyMessage = commandPayload.slice(separatorIndex + 2).trim();
+  const validationResult = telegramReplySchema.safeParse({
+    email,
+    message: replyMessage,
+  });
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return NextResponse.json({ ok: false, error: "Invalid email format" }, { status: 400 });
-    }
+  if (!validationResult.success) {
+    const validationMessage =
+      validationResult.error.issues[0]?.message || 'Invalid reply command.';
 
-    const html = await render(<TelegramReplyTemplates replyText={replyText} />, { pretty: true });
-    const text = `${replyText}\n\nRegards,\nAlok Kumar\nhttps://whoisalok.tech`;
+    await notifyTelegram(chatId, `⚠️ ${validationMessage}`);
+    return NextResponse.json({ ok: false, error: validationMessage }, { status: 400 });
+  }
 
-    const { data, error } = await resend.emails.send({
-      from: "Alok Kumar <contact@mail.whoisalok.tech>",
-      to: email,
-      reply_to: "alokkumar012148@gmail.com", 
-      subject: "Reply from Alok ",
-      html,
-      text,
+  if (!resend) {
+    console.error('Telegram reply email skipped because RESEND_EMAIL_API is missing.');
+    return NextResponse.json(
+      { ok: false, error: 'Email service is not configured.' },
+      { status: 500 }
+    );
+  }
+
+  try {
+    const { error } = await resend.emails.send({
+      from: 'Alok Kumar <contact@mail.whoisalok.tech>',
+      to: validationResult.data.email,
+      replyTo: 'alokkumar012148@gmail.com',
+      subject: 'Reply from Alok Kumar regarding your message',
+      react: <TelegramReplyTemplates replyText={validationResult.data.message} />,
+      text: `${validationResult.data.message}\n\nBest regards,\nAlok Kumar\nhttps://whoisalok.tech`,
     });
 
-
     if (error) {
-      console.error("❌ Resend email error:", error.message);
-      return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      console.error('Telegram reply email failed:', error);
+      return NextResponse.json(
+        { ok: false, error: 'Failed to send reply email.' },
+        { status: 500 }
+      );
     }
-
-    return NextResponse.json({ ok: true, data });
-
-  } catch (err) {
-    return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
+  } catch (error) {
+    console.error('Telegram webhook email send failed:', error);
+    return NextResponse.json(
+      { ok: false, error: 'Failed to send reply email.' },
+      { status: 500 }
+    );
   }
+
+  try {
+    await notifyTelegram(
+      chatId,
+      `✅ Reply sent successfully to <b>${validationResult.data.email}</b>.`
+    );
+  } catch (error) {
+    console.error('Telegram webhook success notification failed:', error);
+  }
+
+  return NextResponse.json(
+    { ok: true, message: 'Reply email sent successfully.' },
+    { status: 200 }
+  );
 }

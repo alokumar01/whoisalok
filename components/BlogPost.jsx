@@ -1,24 +1,25 @@
 'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowRightCircle } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 const blogs = [
   {
-    title: 'Intro About Getting Started with Next.js',
-    summary: 'A beginner-friendly guide to build fast, scalable apps using Next.js.',
+    title: 'Building Better Backend Workflows with Next.js',
+    summary: 'Notes on structuring route handlers, data flow, and project architecture for maintainable full-stack apps.',
     date: 'May 27, 2025',
     readTime: '3 min read',
-    slug: ''
+    slug: '',
   },
   {
-    title: 'Why Tailwind CSS Rocks and Better than other',
-    summary: 'Discover why Tailwind CSS is a favorite utility-first framework.',
+    title: 'Presenting Developer Projects with Clear Technical Storytelling',
+    summary: 'A practical approach to writing about projects so the product value and engineering decisions are easy to understand.',
     date: 'May 20, 2025',
     readTime: '2 min read',
-    slug: ' '
-  }
+    slug: '',
+  },
 ];
 
 const fadeUp = {
@@ -26,70 +27,75 @@ const fadeUp = {
   visible: (i) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.2, duration: 0.6, ease: 'easeOut' }
-  })
+    transition: { delay: i * 0.2, duration: 0.6, ease: 'easeOut' },
+  }),
 };
 
 const BlogPost = () => {
   return (
-    <section 
-  className="max-w-5xl mx-auto px-6 md:px-1 py-20 dark:text-white"
-  style={{ fontFamily: 'var(--font-geist)' }}
->
-  <div className="text-center mb-12">
-    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-      Latest Blog
-    </h2>
-    <div className="mt-3 flex justify-center">
-      <hr className="w-20 border-2 border-indigo-500 rounded" />
-    </div>
-  </div>
+    <section className="section-shell" style={{ fontFamily: 'var(--font-geist)' }}>
+      <div className="section-inner">
+        <div className="mb-12 space-y-4 text-center">
+          <p className="section-kicker">Writing</p>
+          <h2 className="section-title">Latest Blog</h2>
+          <p className="section-copy mx-auto max-w-2xl">
+            Short reads on backend thinking, modern web development, and how I approach building dependable products.
+          </p>
+        </div>
 
-  <div className="grid md:grid-cols-2 gap-10">
-    {blogs.map((blog, i) => (
-      <motion.div
-        key={i}
-        className="border-1  rounded-xl shadow-md p-6 transition-all dark:shadow-xl shadow-indigo-900/10 hover:text-indigo-400 dark:hover:text-indigo-300"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        custom={i}
-        variants={fadeUp}
-      >
-        <h3 className="text-xl font-semibold text-gray-900 mb-1 dark:text-white">
-          {blog.title}
-        </h3>
-        <p className="text-sm text-indigo-500 mb-2 dark:text-blue-200">
-          {blog.date} • {blog.readTime}
-        </p>
-        <p className="text-gray-700 mb-4 dark:text-gray-400">
-          {blog.summary}
-        </p>
-        <Link
-          href={`/blog/${blog.slug}`}
-          className="text-indigo-600 hover:underline font-medium"
+        <div className="grid gap-6 md:grid-cols-2">
+          {blogs.map((blog, i) => (
+            <motion.div
+              key={blog.title}
+              className="surface-card surface-card-hover p-6 sm:p-8"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              custom={i}
+              variants={fadeUp}
+            >
+              <div className="flex h-full flex-col justify-between gap-6">
+                <div className="space-y-4">
+                  <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
+                    <span className="tag-chip">{blog.date}</span>
+                    <span>{blog.readTime}</span>
+                  </div>
+                  <div className="space-y-3">
+                    <h3 className="text-xl font-semibold text-slate-900 dark:text-white sm:text-2xl">
+                      {blog.title}
+                    </h3>
+                    <p className="text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
+                      {blog.summary}
+                    </p>
+                  </div>
+                </div>
+
+                <Link
+                  href={blog.slug ? `/blog/${blog.slug}` : '/blog'}
+                  className="inline-flex items-center gap-2 text-sm font-medium text-sky-700 transition hover:text-sky-600 dark:text-sky-300 dark:hover:text-sky-200"
+                >
+                  Read Article
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div
+          className="mt-10 flex justify-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          viewport={{ once: true }}
         >
-          Read More →
-        </Link>
-      </motion.div>
-    ))}
-  </div>
-
-  <motion.div
-    className="mt-10 flex justify-center"
-    initial={{ opacity: 0 }}
-    whileInView={{ opacity: 1 }}
-    transition={{ delay: 0.4, duration: 0.6 }}
-    viewport={{ once: true }}
-  >
-    <Link href="/blog">
-      <button className="bg-gradient-to-r from-indigo-600 to-indigo-800 hover:from-indigo-700 hover:to-indigo-900 text-white px-8 py-3 rounded-full flex items-center gap-2 transition-all shadow-md cursor-pointer">
-        View All Posts <ArrowRightCircle size={20} />
-      </button>
-    </Link>
-  </motion.div>
-</section>
-
+          <Link href="/blog" className="secondary-button">
+            View All Posts
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </motion.div>
+      </div>
+    </section>
   );
 };
 

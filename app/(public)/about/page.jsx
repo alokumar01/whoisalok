@@ -1,24 +1,20 @@
-
 import { aboutData } from '@/constants/data';
 import About from './AboutPage';
+import { buildMetadata } from '@/lib/site';
 
 // Static generation
 export const dynamic = 'force-static';
 
 export function generateMetadata() {
-  const { name, description, photo } = aboutData.bio;
-  return {
-    title: `${name} – Full-Stack Developer`,
+  const { description } = aboutData.bio;
+
+  return buildMetadata({
+    title: 'About',
     description,
-    keywords: ['Alok Kumar', 'Full-Stack Developer', 'Portfolio', 'React', 'MERN', 'Next.js', 'JavaScript'],
-    openGraph: {
-      title: `${name} – Portfolio`,
-      description,
-      url: 'https://whoisalok.tech/about',
-      type: 'profile',
-      images: [{ url: `https://whoisalok.tech${photo}`, width: 1200, height: 630, alt: `${name} Profile` }],
-    },  
-  };
+    path: '/about',
+    keywords: ['About Alok Kumar', 'Backend Developer', 'Full-Stack Developer', 'Computer Science Student'],
+    type: 'profile',
+  });
 }
 
 export default function Page() {

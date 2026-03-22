@@ -15,7 +15,12 @@ export const projectsData = [
   {
     title: 'Event Management System',
     description:
-      'A robust full-stack web application enabling users to create, view, and manage events with real-time updates. Includes secure authentication, dynamic dashboards for users/admins, and CRUD operations for events.',
+      'A full-stack platform for handling event operations with secure workflows, role-aware dashboards, and a reliable backend data layer.',
+    highlights: [
+      'Role-based dashboards for users and admins',
+      'Event creation, updates, and registration workflows',
+      'MongoDB-backed architecture with secure authentication',
+    ],
     tech: ['Next.js', 'MongoDB', 'Tailwind CSS', 'NextAuth', 'React Hook Form'],
     github: 'https://github.com/alok/event-management-system',
     demo: 'https://whoisalok.tech',
@@ -24,7 +29,12 @@ export const projectsData = [
   {
     title: 'React Portfolio Website',
     description:
-      'A personal portfolio site showcasing projects, blogs, and achievements. Features CMS integration for easy content management, dark/light mode toggle, and responsive design for all devices.',
+      'A developer portfolio built to present projects, writing, and contact workflows with a polished UI and manageable content structure.',
+    highlights: [
+      'Sanity-powered blog and content workflow',
+      'Reusable UI sections with responsive layouts',
+      'Integrated contact and newsletter experiences',
+    ],
     tech: ['Next.js', 'Tailwind CSS', 'Sanity CMS', 'Framer Motion'],
     github: 'https://github.com/alok/portfolio',
     demo: 'https://whoisalok.tech',
@@ -35,15 +45,30 @@ export const projectsData = [
 export const aboutData = {
   bio: {
     name: 'Alok Kumar',
-    tagline: 'Full-Stack Developer | 3rd-Year B.Tech CSE Student',
+    tagline: 'Full-Stack Developer focused on scalable backend systems',
     description:
-      'I’m Alok Kumar, a 3rd-year B.Tech CSE student at Lovely Professional University, passionate about building full-stack applications with MERN and Next.js. From developing my portfolio to collaborating on an Event Management System, I enjoy turning ideas into reality. I’m eager to contribute my skills to internships and create impactful solutions.',
+      'I’m Alok Kumar, a full-stack developer and computer science student focused on building maintainable backend systems, clean APIs, and responsive web applications. I enjoy working across Next.js, Node.js, and MongoDB to deliver products that are reliable, scalable, and straightforward to use.',
     photo: '/images/alok4cropped.jpeg',
     ctas: [
       { label: 'View My Projects', href: '/projects', primary: true },
       { label: 'Get in Touch', href: '/contact', primary: false },
     ],
   },
+
+  focusAreas: [
+    {
+      title: 'Backend Systems',
+      description: 'I focus on building clean APIs, dependable server-side workflows, and data models that can support product growth without unnecessary complexity.',
+    },
+    {
+      title: 'Full-Stack Delivery',
+      description: 'I connect backend logic with responsive interfaces so the final experience feels clear, efficient, and production-ready across devices.',
+    },
+    {
+      title: 'Maintainable Engineering',
+      description: 'I care about readable code, practical architecture, and making implementation choices that stay easy to extend over time.',
+    },
+  ],
 
   education: [
     {
@@ -201,6 +226,26 @@ export const projectsMain = [
     status: 'In-progress',
     type: 'Personal Project',
     category: 'Web Application',
+    featured: true,
+    keyHighlights: [
+      'Sanity-powered blog workflow with dynamic content rendering',
+      'Responsive portfolio sections for projects, writing, and contact',
+      'Reusable UI patterns designed for a polished developer presentation',
+    ],
+    problem:
+      'I needed a portfolio that could present projects, blogs, and contact workflows in a structured way while still being easy to maintain and update.',
+    solution:
+      'I built a modular Next.js application with reusable UI sections, Sanity-backed content for blogging, and dedicated routes for portfolio pages without overcomplicating the architecture.',
+    keyFeatures: [
+      'Dedicated project, blog, and contact pages',
+      'CMS-backed blog management with portable content rendering',
+      'Responsive dark-theme interface with reusable section patterns',
+    ],
+    learnings: [
+      'How to structure a portfolio around maintainable content and reusable sections',
+      'How to balance visual polish with clarity and performance',
+      'How to improve presentation quality without changing backend logic',
+    ],
   },
   {
     name: 'Airbnb-Like Website',
@@ -213,6 +258,26 @@ export const projectsMain = [
     status: 'Completed',
     type: 'Personal Project',
     category: 'Web Application',
+    featured: true,
+    keyHighlights: [
+      'Listing and browsing flow for hostel-style properties',
+      'Backend CRUD operations with MongoDB Atlas',
+      'Map-based discovery integrated into the user journey',
+    ],
+    problem:
+      'The goal was to build a full-stack accommodation listing platform that handled property data, browsing, and location-aware discovery in one experience.',
+    solution:
+      'I created a MERN-style application with server-rendered listing flows, persistent data storage, and map integration to make searching and exploring properties straightforward.',
+    keyFeatures: [
+      'Property listing and detail views',
+      'Backend-connected create, read, update, and delete flows',
+      'Location and map integration for browsing',
+    ],
+    learnings: [
+      'How backend data modeling affects listing and filtering experiences',
+      'How to connect map-based UI with structured resource data',
+      'How to keep a multi-page product flow easy to navigate',
+    ],
   },
   {
     name: 'Event Management System',
@@ -225,7 +290,25 @@ export const projectsMain = [
     status: 'In-progress',
     type: 'Group Project',
     category: 'Web Application',
+    featured: false,
+    keyHighlights: [
+      'Registration and scheduling flows for event participation',
+      'Collaborative development with shared product responsibilities',
+      'Full-stack architecture centered on event operations',
+    ],
+    problem:
+      'Managing event creation, registrations, and schedules across different users can quickly become hard to organize without a structured system.',
+    solution:
+      'We built a full-stack event workflow that centralizes scheduling, registration, and role-based actions in one application experience.',
+    keyFeatures: [
+      'Event creation and management workflows',
+      'User participation and registration handling',
+      'Shared dashboards and operational views',
+    ],
+    learnings: [
+      'How to collaborate on a multi-role product with shared ownership',
+      'How event-oriented workflows benefit from clear backend structure',
+      'How to communicate feature responsibilities across a team project',
+    ],
   },
 ];
-
-
