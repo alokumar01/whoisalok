@@ -9,6 +9,7 @@ import ThemeProviderClient from "@/components/ThemeProviderClient";
 import { Toaster } from "@/components/ui/sonner";
 import ConditionalUI from '@/components/ConditionalUI';
 import { getOgImage, siteConfig } from '@/lib/site';
+import AssistLoopAI from '@/components/AssistLoopAI';
 
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space' });
 const workSans = Work_Sans({ subsets: ['latin'], variable: '--font-work' });
@@ -70,13 +71,15 @@ export default function RootLayout({ children }) {
               <CanvasCursor />
             </ConditionalUI>
 
-            <main className="flex-grow overflow-x-hidden">{children}</main>
+            <main className="grow overflow-x-hidden">{children}</main>
 
             <ConditionalUI>
               <Footer />
             </ConditionalUI>
             
           </ThemeProviderClient>
+
+          <AssistLoopAI />
         </div>
       </body>
     </html>

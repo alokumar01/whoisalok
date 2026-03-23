@@ -22,24 +22,24 @@ export const projectsData = [
       'MongoDB-backed architecture with secure authentication',
     ],
     tech: ['Next.js', 'MongoDB', 'Tailwind CSS', 'NextAuth', 'React Hook Form'],
-    github: 'https://github.com/alok/event-management-system',
-    demo: 'https://whoisalok.tech',
-    image: '/images/try.jpg',
+    // github: 'https://github.com/alok/event-management-system',
+    demo: 'https://orgatick.in',
+    image: '/images/orgatickImage.png',
   },
-  {
-    title: 'React Portfolio Website',
-    description:
-      'A developer portfolio built to present projects, writing, and contact workflows with a polished UI and manageable content structure.',
-    highlights: [
-      'Sanity-powered blog and content workflow',
-      'Reusable UI sections with responsive layouts',
-      'Integrated contact and newsletter experiences',
-    ],
-    tech: ['Next.js', 'Tailwind CSS', 'Sanity CMS', 'Framer Motion'],
-    github: 'https://github.com/alok/portfolio',
-    demo: 'https://whoisalok.tech',
-    image: '/images/ems.webp',
-  },
+  // {
+  //   title: 'React Portfolio Website',
+  //   description:
+  //     'A developer portfolio built to present projects, writing, and contact workflows with a polished UI and manageable content structure.',
+  //   highlights: [
+  //     'Sanity-powered blog and content workflow',
+  //     'Reusable UI sections with responsive layouts',
+  //     'Integrated contact and newsletter experiences',
+  //   ],
+  //   tech: ['Next.js', 'Tailwind CSS', 'Sanity CMS', 'Framer Motion'],
+  //   github: 'https://github.com/alok/portfolio',
+  //   demo: 'https://whoisalok.tech',
+  //   image: '/images/ems.webp',
+  // },
 ]
 
 export const aboutData = {
@@ -48,7 +48,7 @@ export const aboutData = {
     tagline: 'Full-Stack Developer focused on scalable backend systems',
     description:
       'I’m Alok Kumar, a full-stack developer and computer science student focused on building maintainable backend systems, clean APIs, and responsive web applications. I enjoy working across Next.js, Node.js, and MongoDB to deliver products that are reliable, scalable, and straightforward to use.',
-    photo: '/images/alok4cropped.jpeg',
+    photo: '/images/alok.png',
     ctas: [
       { label: 'View My Projects', href: '/projects', primary: true },
       { label: 'Get in Touch', href: '/contact', primary: false },
@@ -100,7 +100,7 @@ export const aboutData = {
       coursework: ['Maths', 'Science', 'Social Science', 'English', 'Hindi'],
     },
   ],
-  
+
   skills: [
     'HTML',
     'CSS',
@@ -216,17 +216,96 @@ export const aboutData = {
 
 export const projectsMain = [
   {
+    name: 'Dev-Clustra',
+    description: 'Dev-Clustra is a team collaboration platform designed to help small teams communicate, share ideas, and collaborate in real-time during hackathons and short-term projects.',
+    images: '/images/dev-clustra.png',
+    tech: [
+      'Next.js',
+      'Node.js',
+      'Express.js',
+      'MongoDB',
+      'Socket.IO',
+      'WebSocket',
+      'JWT',
+      'Redis',
+      'Tailwind CSS'
+    ],
+    githubLink: 'https://github.com/alokumar01/dev-clustra',
+    slug: 'dev-clustra',
+    status: 'In-Progress',
+    type: 'Personal Project',
+    category: 'Web Application',
+    featured: true,
+    keyHighlights: [
+      'Implemented JWT-based authentication with secure access and refresh token flow',
+      'Designed scalable MongoDB schemas for users, conversations, and messages',
+      'Building real-time chat system using Socket.IO with room-based communication',
+      'Planned ephemeral chat feature with automatic room cleanup and privacy-first design'
+    ],
+    problem:
+      'During hackathons and short-term collaborations, teams often rely on multiple disconnected tools for communication, which leads to inefficiency, context switching, and loss of important discussions.',
+    solution:
+      'Dev-Clustra provides a unified platform for team communication with real-time messaging, structured conversations, and temporary chat rooms, reducing dependency on multiple tools and improving collaboration efficiency.',
+    keyFeatures: [
+      'Real-time one-to-one and group chat using Socket.IO',
+      'Secure authentication and authorization using JWT',
+      'Ephemeral chat rooms with auto-deletion when all users leave',
+      'Room-based communication system for team collaboration',
+      'Scalable backend architecture using Node.js, Express, and MongoDB'
+    ],
+
+    learnings: [
+      'Implemented authentication flows using JWT with access and refresh tokens',
+      'Gained hands-on experience with real-time systems using WebSocket and Socket.IO',
+      'Learned to design scalable database schemas for chat applications',
+      'Understood trade-offs between in-memory storage and persistent storage',
+      'Improved backend architecture and API design skills'
+    ]
+  },
+  {
+    name: 'Event Management System',
+    description: 'A full-stack app for event planning, with user registration, scheduling, and notifications, developed collaboratively.',
+    images: '/images/orgatickImage.png',
+    tech: ['Next.js', 'MongoDB', 'Tailwind CSS'],
+    liveLink: 'https://orgatick.in',
+    // githubLink: 'https://github.com/niyojanems/EMS',
+    slug: 'event-management-system',
+    status: 'Completed',
+    type: 'Group Project',
+    category: 'Web Application',
+    featured: true,
+    keyHighlights: [
+      'Registration and scheduling flows for event participation',
+      'Collaborative development with shared product responsibilities',
+      'Full-stack architecture centered on event operations',
+    ],
+    problem:
+      'Managing event creation, registrations, and schedules across different users can quickly become hard to organize without a structured system.',
+    solution:
+      'We built a full-stack event workflow that centralizes scheduling, registration, and role-based actions in one application experience.',
+    keyFeatures: [
+      'Event creation and management workflows',
+      'User participation and registration handling',
+      'Shared dashboards and operational views',
+    ],
+    learnings: [
+      'How to collaborate on a multi-role product with shared ownership',
+      'How event-oriented workflows benefit from clear backend structure',
+      'How to communicate feature responsibilities across a team project',
+    ],
+  },
+  {
     name: 'Portfolio Website',
     description: 'My personal portfolio showcasing full-stack skills with Next.js, Tailwind, and advanced UI/UX animations using Framer Motion and Shadcn/UI.',
-    images: ['/images/ems.webp', '/images/try.jpg'],
+    images: '/images/portfolio_project.png',
     tech: ['Next.js', 'Tailwind CSS', 'Shadcn/UI', 'Framer Motion'],
     liveLink: 'https://whoisalok.tech',
     githubLink: 'https://github.com/alokumar01/whoisalok',
     slug: 'portfolio-website',
-    status: 'In-progress',
+    status: 'Completed',
     type: 'Personal Project',
     category: 'Web Application',
-    featured: true,
+    featured: false,
     keyHighlights: [
       'Sanity-powered blog workflow with dynamic content rendering',
       'Responsive portfolio sections for projects, writing, and contact',
@@ -250,7 +329,7 @@ export const projectsMain = [
   {
     name: 'Airbnb-Like Website',
     description: 'A web app for listing and viewing hostels with maps integration, built during a web development course using MongoDB Atlas, Express, Node.js, and Tailwind CSS.',
-    images: ['/images/ems.webp', '/images/try.jpg'],
+    images: '/images/airbng_project.png',
     tech: ['MongoDB Atlas', 'Express', 'Node.js', 'Tailwind CSS', 'HTML', 'CSS'],
     liveLink: 'https://alokkumar-projects.onrender.com/listings',
     githubLink: 'https://github.com/alokumar01/projects-alokkumar',
@@ -258,7 +337,7 @@ export const projectsMain = [
     status: 'Completed',
     type: 'Personal Project',
     category: 'Web Application',
-    featured: true,
+    featured: false,
     keyHighlights: [
       'Listing and browsing flow for hostel-style properties',
       'Backend CRUD operations with MongoDB Atlas',
@@ -277,38 +356,6 @@ export const projectsMain = [
       'How backend data modeling affects listing and filtering experiences',
       'How to connect map-based UI with structured resource data',
       'How to keep a multi-page product flow easy to navigate',
-    ],
-  },
-  {
-    name: 'Event Management System',
-    description: 'A full-stack app for event planning, with user registration, scheduling, and notifications, developed collaboratively.',
-    images: ['/images/ems.webp', '/images/try.jpg'],
-    tech: ['Next.js', 'MongoDB', 'Tailwind CSS'],
-    liveLink: 'https://whoisalok.tech',
-    githubLink: 'https://github.com/niyojanems/EMS',
-    slug: 'event-management-system',
-    status: 'In-progress',
-    type: 'Group Project',
-    category: 'Web Application',
-    featured: false,
-    keyHighlights: [
-      'Registration and scheduling flows for event participation',
-      'Collaborative development with shared product responsibilities',
-      'Full-stack architecture centered on event operations',
-    ],
-    problem:
-      'Managing event creation, registrations, and schedules across different users can quickly become hard to organize without a structured system.',
-    solution:
-      'We built a full-stack event workflow that centralizes scheduling, registration, and role-based actions in one application experience.',
-    keyFeatures: [
-      'Event creation and management workflows',
-      'User participation and registration handling',
-      'Shared dashboards and operational views',
-    ],
-    learnings: [
-      'How to collaborate on a multi-role product with shared ownership',
-      'How event-oriented workflows benefit from clear backend structure',
-      'How to communicate feature responsibilities across a team project',
     ],
   },
 ];
